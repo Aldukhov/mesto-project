@@ -7,6 +7,7 @@
 /*Header*/
 
 @import url(../blocks/header/__logo/header__logo.css);
+
 @import url(../blocks/header/header.css);
 
 /*Profile*/
@@ -30,8 +31,6 @@
 @import url(../blocks/popup/__input/popup__input.css);
 @import url(../blocks/popup/__icon/popup__icon.css);
 @import url(../blocks/popup/__body/popup__body.css);
-@import url(../blocks/popup/__edit/_margin/popup__edit_margin.css);
-
 
 /*Elements*/
 
