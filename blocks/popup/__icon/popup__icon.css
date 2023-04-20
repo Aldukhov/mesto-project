@@ -1,0 +1,24 @@
+.popup__icon {
+    position: absolute;
+    right:-40px;
+    top:-40px;
+    max-width: 32px;
+    max-height: 32px;
+    opacity:1;
+    transition: opacity 0.3s linear;
+}
+
+.popup__icon:hover {
+    opacity: 0.6;
+
+}
+
+@media screen and (max-width:580px) { 
+    .popup__icon {
+        top:-36px;
+        right: 0;
+        max-width: 20px;
+        max-height: 20px;
+    }
+    
+}

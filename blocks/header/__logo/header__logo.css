@@ -1,0 +1,33 @@
+.header__logo
+{
+    background-image: url("./../../../images/logo.svg");
+    background-repeat: no-repeat;
+    max-width: 282px;
+    height: 33px;
+    margin-bottom: calc(31px + 0.8vw);
+    opacity: 1;
+    transition: opacity 0.3s linear;
+}
+
+.header__logo:hover {
+     opacity: 0.6;
+}
+
+@media screen and (max-width:880px) { 
+    .header__logo {
+        margin-left: 10px;
+    }
+    
+}
+
+@media screen and (max-width:320px) { 
+
+    .header__logo { 
+        margin-left: auto;
+        margin-right: auto;
+        background-image: url("./../../../images/logoMobileApp.svg");
+        height: 25px;
+
+    }
+    
+}
