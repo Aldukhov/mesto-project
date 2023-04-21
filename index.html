@@ -18,40 +18,21 @@
 
         <main>
             <section class="profile">
-                <div class="profile__profileInfo">
-                    <img class="profile__avatar" src="./images/AvatarImage.jpg" alt="Аватар">
+                <div class="profile__profile-info">
+                    <img class="profile__avatar" src="./images/avatar-image.jpg" alt="Аватар">
                     <div>
                         <div class="profile__inform">
                             <h1 class="profile__name" id="name">Жак-Ив Кусто</h1>
-                            <button class="profile__edit"></button>
+                            <button type="button" class="profile__edit"></button>
                         </div>
                         <p class="profile__post" id="post">Исследователь океана</p>
 
                     </div>
                 </div>
-                <button class="profile__add"></button>
+                <button type="button" class="profile__add"></button>
             </section>
 
-            <section class="popup popup_disable">
-                <div class="popup__body">
 
-
-                    <form class="popup__edit">
-
-                        <img class="popup__icon" src="./images/Close_Icon.png" alt="закрытие">
-
-                        <h1 class="popup__heading">Редактировать профиль</h1>
-
-                        <input type="text" placeholder="Имя" class="popup__input">
-
-                        <input type="text" placeholder="Должность" class="popup__input">
-
-                        <button class="popup__button">Сохранить</button>
-
-                    </form>
-
-                </div>
-            </section>
 
 
             <section class="elements">
@@ -60,40 +41,40 @@
                 <div>
                     <img class="elements__img" src="./images/karachaevo.png" alt="Карачаево">
                     <div class="elements__caption">
-                        <p class="elements__name">Карачаево-Черкессия</p>
-                        <img class="elements__like" src="./images/heart.svg" alt="Сердечко">
+                        <h2 class="elements__name">Карачаево-Черкессия</h2>
+                        <button class="elements__like"></button>
                     </div>
                 </div>
 
                 <div>
                     <img class="elements__img" src="./images/elbrus.png" alt="Эльбрус">
                     <div class="elements__caption">
-                        <p class="elements__name">Гора Эльбрус</p>
-                        <img class="elements__like" src="./images/heart.svg" alt="Сердечко">
+                        <h2 class="elements__name">Гора Эльбрус</h2>
+                        <button class="elements__like"></button>
                     </div>
                 </div>
 
                 <div>
                     <img class="elements__img" src="./images/donbai.png" alt="Донбай">
                     <div class="elements__caption">
-                        <p class="elements__name">Домбай</p>
-                        <img class="elements__like" src="./images/heart.svg" alt="Сердечко">
+                        <h2 class="elements__name">Домбай</h2>
+                        <button class="elements__like"></button>
                     </div>
                 </div>
 
                 <div>
                     <img class="elements__img" src="./images/elbrus.png" alt="Эльбрус">
                     <div class="elements__caption">
-                        <p class="elements__name">Гора Эльбрус</p>
-                        <img class="elements__like" src="./images/heart.svg" alt="Сердечко">
+                        <h2 class="elements__name">Гора Эльбрус</h2>
+                        <button class="elements__like"></button>
                     </div>
                 </div>
 
                 <div>
                     <img class="elements__img" src="./images/donbai.png" alt="Донбай">
                     <div class="elements__caption">
-                        <p class="elements__name">Домбай</p>
-                        <img class="elements__like" src="./images/heart.svg" alt="Сердечко">
+                        <h2 class="elements__name">Домбай</h2>
+                        <button class="elements__like"></button>
                     </div>
                 </div>
 
@@ -101,21 +82,36 @@
 
                     <img class="elements__img" src="./images/karachaevo.png" alt="Карачаево">
                     <div class="elements__caption">
-                        <p class="elements__name">Карачаево-Черкессия</p>
-                        <img class="elements__like" src="./images/heart.svg" alt="Сердечко">
+                        <h2 class="elements__name">Карачаево-Черкессия</h2>
+                        <button class="elements__like"></button>
                     </div>
+
+                </div>
+            </section>
+
+            <section class="popup popup_opened">
+                <div class="popup__container">
+
+                    <form name="edit" class="popup__edit">
+                        <button type="button" class="popup__icon"></button>
+
+                        <h2 class="popup__heading">Редактировать профиль</h2>
+
+                        <input type="text" name="name" placeholder="Имя" class="popup__input" required>
+
+                        <input type="text" name="post" placeholder="Должность" class="popup__input" required>
+
+                        <button type="submit" class="popup__button">Сохранить</button>
+
+                    </form>
 
                 </div>
             </section>
         </main>
 
         <footer class="footer">
-            <p class="footer__copyright"> &#169; 2023 Mestro Russia</p>
+            <p class="footer__copyright"> &#169; 2023 Mesto Russia</p>
         </footer>
-
-
-
-
     </div>
 
 </body>

@@ -1,23 +1,22 @@
 .header {
     margin: 45px auto 40px auto;
-   border-bottom-style:solid;
-   border-bottom-color: #545454;
-   border-bottom-width: 1px;
-   width: 100%;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(84, 84, 84, 0.7);
+    border-bottom-width: 1px;
+    width: 100%;
 }
 
-@media screen and (max-width:580px) { 
-    .header { 
+@media screen and (max-width:580px) {
+    .header {
         margin: 28px 0 42px 0;
 
     }
-    
+
 }
 
-@media screen and (max-width:320px) { 
-    .header { 
+@media screen and (max-width:320px) {
+    .header {
         margin: 28px auto 42px auto;
-
     }
-    
+
 }

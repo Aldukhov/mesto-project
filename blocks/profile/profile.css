@@ -1,5 +1,5 @@
 .profile {
-    width:100%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -12,5 +12,5 @@
         flex-direction: column;
         margin: 0 auto 36px auto;
     }
-    
+
 }

@@ -1,5 +1,4 @@
-.header__logo
-{
+.header__logo {
     background-image: url("./../../../images/logo.svg");
     background-repeat: no-repeat;
     max-width: 282px;
@@ -10,24 +9,24 @@
 }
 
 .header__logo:hover {
-     opacity: 0.6;
+    opacity: 0.6;
 }
 
-@media screen and (max-width:880px) { 
+@media screen and (max-width:880px) {
     .header__logo {
         margin-left: 10px;
     }
-    
+
 }
 
-@media screen and (max-width:320px) { 
+@media screen and (max-width:320px) {
 
-    .header__logo { 
+    .header__logo {
         margin-left: auto;
         margin-right: auto;
-        background-image: url("./../../../images/logoMobileApp.svg");
+        background-image: url("./../../../images/logo-mobile-app.svg");
         height: 25px;
 
     }
-    
+
 }

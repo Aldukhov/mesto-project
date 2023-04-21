@@ -2,6 +2,5 @@
     display:grid;
     grid-template-columns: repeat(auto-fit, 282px);
     gap:17px;
-    margin-bottom: 66px; 
     justify-content: center;
 }

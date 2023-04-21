@@ -1,14 +1,14 @@
-.profile__profileInfo {
+.profile__profile-info {
     color: #FFFFFF;
-display: flex;
-align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 @media screen and (max-width:900px) {
 
-    .profile__profileInfo {
+    .profile__profile-info {
         display: block;
         margin: 0 auto 36px auto;
     }
-    
+
 }

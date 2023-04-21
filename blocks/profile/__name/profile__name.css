@@ -1,9 +1,12 @@
 .profile__name {
     font-weight: 500;
-font-size: 42px;
-line-height: 114%;
-margin:0 18px 0 0;
-white-space: nowrap;
+    font-size: 42px;
+    line-height: 114%;
+    margin: 0 18px 0 0;
+    text-overflow: ellipsis;
+    max-width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 @media screen and (max-width:900px) {
@@ -12,13 +15,13 @@ white-space: nowrap;
         margin: 0 10px 0 0;
         font-size: calc(27px + 2vw);
     }
-    
+
 }
 
-@media screen and (max-width:320px) { 
+@media screen and (max-width:320px) {
 
     .profile__name {
         font-size: 27px;
     }
-    
+
 }

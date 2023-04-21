@@ -1,8 +1,12 @@
 .profile__post {
     font-weight: 400;
-font-size: 18px;
-line-height: 22px;
-margin:16px 0 0 0;
+    font-size: 18px;
+    line-height: 22px;
+    margin: 16px 0 0 0;
+    text-overflow: ellipsis;
+    max-width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 @media screen and (max-width:900px) {
@@ -12,13 +16,13 @@ margin:16px 0 0 0;
         text-align: center;
         margin-top: 14px;
     }
-    
+
 }
 
-@media screen and (max-width: 320px) { 
+@media screen and (max-width: 320px) {
     .profile__post {
         font-size: 14px;
-        
+
     }
-    
+
 }
