@@ -1,12 +1,11 @@
 .profile__inform {
     display: flex;
-    align-items: self-end;
+    align-items: baseline;
 }
 
 @media screen and (max-width:900px) {
 
     .profile__inform {
-        align-items: baseline;
         margin-top: 26px;
     }
 
