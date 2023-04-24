@@ -19,7 +19,7 @@
 
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 400px) {
     .profile__post {
         font-size: 14px;
         max-width: 282px;
