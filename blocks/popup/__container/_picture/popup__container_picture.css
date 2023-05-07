@@ -1,0 +1,23 @@
+.popup__container_picture {
+    background-color:transparent; 
+    width: 75vw;
+    height: 75vh;
+    max-width:816px;
+    max-height: 540px;
+   border-radius: 0%;
+}
+
+
+@media screen and (max-width:597px) { 
+    .popup__container_picture { 
+        height: calc(300px + 2vh);
+    }
+
+}
+
+@media screen and (max-width:400px) {
+    .popup__container_picture {
+        height: 299px;
+    }
+    
+}
