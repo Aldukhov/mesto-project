@@ -13,30 +13,44 @@ const popupFirst = content.querySelector('.popup_edit');
 const popupContainer = popupFirst.querySelector('.popup__container_edit');
 
 //Элементы popup input и profile
-let popupInputs = popupContainer.querySelectorAll('.popup__input');
-let profileName = profileInform.querySelector('.profile__name');
-let profilePost = profileProfileInfo.querySelector('.profile__post');
+const popupNameInput = popupContainer.querySelector('#popup_name');
+const popupPostInput = popupContainer.querySelector('#popup_post');
+const profileName = profileInform.querySelector('.profile__name');
+const profilePost = profileProfileInfo.querySelector('.profile__post');
 
 // Открытие / Закрытие popup
 const closeButton = popupContainer.querySelector('.popup__icon');
 const editButton = profileInform.querySelector('.profile__edit');
-
-
-function openAndClose(pop, number, popInput) {
-
-  if (number === 1) {
-    popInput[0].value = profileName.textContent;
-    popInput[1].value = profilePost.textContent;
-  } else if (number === 2) {
-    popInput[0].value = '';
-    popInput[1].value = '';
-  }
-  return pop.classList.toggle('popup_opened');
-
+////////////////////////////////////////////////
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
 }
+/////////////////////////////////////////////
+function openPopup(popup) {
+  if (popup.classList.contains('popup_edit')) {
+    popupNameInput.value = profileName.textContent;
+    popupPostInput.value = profilePost.textContent;
+  } else if (popup.classList.contains('popup_add')) {
+    popupFormCard.reset();
+  }
+  popup.classList.add('popup_opened');
+}
+//////////////////////////////////////
 
-editButton.addEventListener('click', () => openAndClose(popupFirst, 1, popupInputs));
-closeButton.addEventListener('click', () => openAndClose(popupFirst, 1, popupInputs));
+editButton.addEventListener('click', () => openPopup(popupFirst));
+
+// находим все крестики проекта по универсальному селектору
+const closeButtons = content.querySelectorAll('.popup__icon');
+
+closeButtons.forEach((button) => {
+  // находим 1 раз ближайший к крестику попап 
+  const popup = button.closest('.popup');
+  // устанавливаем обработчик закрытия на крестик
+  button.addEventListener('click', () => closePopup(popup));
+});
+
+
+
 
 //Редактирование имени и информации
 
@@ -44,10 +58,10 @@ const formElement = popupContainer.querySelector('.popup__form');
 
 function handleFormSubmit(evt) {
   evt.preventDefault();
-  profileName.textContent = popupInputs[0].value;
-  profilePost.textContent = popupInputs[1].value;
+  profileName.textContent = popupNameInput.value;
+  profilePost.textContent = popupPostInput.value;
 
-  openAndClose(popupFirst, 1, popupInputs);
+  closePopup(popupFirst);
 }
 
 formElement.addEventListener('submit', handleFormSubmit);
@@ -56,22 +70,21 @@ formElement.addEventListener('submit', handleFormSubmit);
 
 const popupPicture = content.querySelector('.popup_picture');
 const popupPicContainer = popupPicture.querySelector('.popup__container_picture');
-let popupImg = popupPicContainer.querySelector('.popup__img');
-let popupCaption = popupPicContainer.querySelector('.popup__caption');
+const popupImg = popupPicContainer.querySelector('.popup__img');
+const popupCaption = popupPicContainer.querySelector('.popup__caption');
 const closeButtonPicture = popupPicContainer.querySelector('.popup__icon');
 
-closeButtonPicture.addEventListener('click', () => openAndClose(popupPicture, 3));
 
 function openPicture(card) {
 
   card.querySelector('.elements__img').addEventListener('click', function (evt) {
 
     popupImg.setAttribute('src', evt.target.getAttribute('src'));
-  
-    popupImg.setAttribute('alt',evt.target.nextElementSibling.textContent);
+
+    popupImg.setAttribute('alt', evt.target.nextElementSibling.textContent);
 
     popupCaption.textContent = evt.target.getAttribute('alt');
-    openAndClose(popupPicture, 3)
+    openPopup(popupPicture);
   });
 };
 
@@ -107,12 +120,17 @@ const initialCards = [
 
 const cardsContainer = document.querySelector('.elements'); // создание контейнера
 
+function createCard() {
+  const cardTemplate = document.querySelector('#card-template').content; // создание template
+  const card = cardTemplate.querySelector('.elements__card').cloneNode(true); // клонирование элемента
+  return card
+}
+
 function cardLoad() { //функция загузки карточек на страницу
 
   for (let i = 0; i < initialCards.length; i++) {
 
-    const cardTemplate = document.querySelector('#card-template').content; // создание template
-    const card = cardTemplate.querySelector('.elements__card').cloneNode(true); // клонирование элемента
+    const card = createCard();
     card.querySelector('.elements__img').setAttribute('src', initialCards[i].link);
     card.querySelector('.elements__img').setAttribute('alt', initialCards[i].name);
     card.querySelector('.elements__name').textContent = initialCards[i].name;
@@ -152,30 +170,29 @@ const popupCardContain = popupSecond.querySelector('.popup__container_add');
 const closeButtonCard = popupCardContain.querySelector('.popup__icon');
 const editButtonCard = profile.querySelector('.profile__add');
 
-editButtonCard.addEventListener('click', () => openAndClose(popupSecond, 2, popupCardInputs));
-closeButtonCard.addEventListener('click', () => openAndClose(popupSecond, 2, popupCardInputs));
+editButtonCard.addEventListener('click', () => openPopup(popupSecond));
 
 
 //Добавление Карточки 
 
 //Элемент popup input
-let popupCardInputs = popupCardContain.querySelectorAll('.popup__input');
-let popupFormCard = popupCardContain.querySelector('.popup__cards');
+const popupTitleInput = popupCardContain.querySelector('#popup_title');
+const popupLinkInput = popupCardContain.querySelector('#popup_link');
+const popupFormCard = popupCardContain.querySelector('.popup__cards');
 
 function addNewCard(evt) {
 
   evt.preventDefault();
-  const cardTemplate = document.querySelector('#card-template').content; // создание template
-  const card = cardTemplate.querySelector('.elements__card').cloneNode(true); // клонирование элемента
-  card.querySelector('.elements__img').setAttribute('src', popupCardInputs[1].value);
-  card.querySelector('.elements__img').setAttribute('alt', popupCardInputs[0].value);
-  card.querySelector('.elements__name').textContent = popupCardInputs[0].value;
+  const card = createCard();
+  card.querySelector('.elements__img').setAttribute('src', popupTitleInput.value);
+  card.querySelector('.elements__img').setAttribute('alt', popupLinkInput.value);
+  card.querySelector('.elements__name').textContent = popupLinkInput.value;
   deleteCard(card);
   like(card);
   openPicture(card);
   cardsContainer.prepend(card);
 
-  openAndClose(popupSecond, 2, popupCardInputs);
+  closePopup(popupSecond);
 }
 
 
