@@ -122,25 +122,24 @@ const initialCards = [
 
 const cardsContainer = document.querySelector('.elements'); // создание контейнера
 
-function createCard(initialCards) {
+function createCard(title, input) {
   const cardTemplate = document.querySelector('#card-template').content; // создание template
   const card = cardTemplate.querySelector('.elements__card').cloneNode(true); // клонирование элемента
-  card.querySelector('.elements__img').setAttribute('src', initialCards.link);
-  card.querySelector('.elements__img').setAttribute('alt', initialCards.name);
-  card.querySelector('.elements__name').textContent = initialCards.name;
-  return card
+  card.querySelector('.elements__img').setAttribute('src', title);
+  card.querySelector('.elements__img').setAttribute('alt', input);
+  card.querySelector('.elements__name').textContent = input;
+  deleteCard(card);
+  like(card);
+  openPicture(card);
+
+  return card;
 }
 
 function cardLoad() { //функция загузки карточек на страницу
 
   for (let i = 0; i < initialCards.length; i++) {
 
-    const card = createCard(initialCards[i]);
-    deleteCard(card);
-    like(card);
-    openPicture(card);
-
-    cardsContainer.append(card);
+    cardsContainer.append(createCard(initialCards[i].link, initialCards[i].name));
   }
 }
 
@@ -182,24 +181,11 @@ const popupTitleInput = popupCardContain.querySelector('#popup_title');
 const popupLinkInput = popupCardContain.querySelector('#popup_link');
 const popupFormCard = popupCardContain.querySelector('.popup__cards');
 
-function createNewCard() {
-  const cardTemplate = document.querySelector('#card-template').content; // создание template
-  const card = cardTemplate.querySelector('.elements__card').cloneNode(true); // клонирование элемента
-  card.querySelector('.elements__img').setAttribute('src', popupTitleInput.value);
-  card.querySelector('.elements__img').setAttribute('alt', popupLinkInput.value);
-  card.querySelector('.elements__name').textContent = popupLinkInput.value;
-
-  return card;
-}
 
 function addNewCard(evt) {
 
   evt.preventDefault();
-  const card = createNewCard();
-  deleteCard(card);
-  like(card);
-  openPicture(card);
-  cardsContainer.prepend(card);
+  cardsContainer.prepend(createCard(popupTitleInput.value, popupLinkInput.value));
   closePopup(popupSecond);
 }
 
