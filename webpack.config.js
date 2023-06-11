@@ -1,12 +1,18 @@
 const path = require('path'); 
+const nodeExternals = require('webpack-node-externals');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); 
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
-module.exports = {
-    entry: { main: './src/index.js' },
 
+module.exports = {
+    entry: { main: './src/components/index.js' },
+    resolve: {
+      fallback: {
+          "fs": false
+      },
+  },
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'main.js',
@@ -56,3 +62,7 @@ module.exports = {
   }),new CleanWebpackPlugin(),
   new MiniCssExtractPlugin(),new NodePolyfillPlugin()]
 }
+
+
+
+

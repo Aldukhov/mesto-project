@@ -1,54 +1,67 @@
-import { content } from "../index.js";
-const toggleButtonState = (inputList, buttonElement) => {
+import { content } from "./index.js";
+
+const toggleButtonState = (inputList, buttonElement,obj) => {
 
     if (hasInvalidInput(inputList)) {
       // buttonElement.setAttribute('disabled');
       buttonElement.disabled = true;
-      buttonElement.classList.add('popup__button_inactive');
+      buttonElement.classList.add(obj.inactiveButtonClass);
     } else {
       buttonElement.disabled = false;
-      buttonElement.classList.remove('popup__button_inactive');
+      buttonElement.classList.remove(obj.inactiveButtonClass);
     }
   }
   
-  const setEventListeners = (formElement) => {
+  function resetValidity(popup,obj) {
+    
+    const inputList = Array.from(popup.querySelectorAll('.popup__input'));
   
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+    inputList.forEach((input) => {
+  
+      hideInputError(popup, input,obj);
+  
+    })
+  
+  }
+
+  const setEventListeners = (formElement,obj) => {
+  
+    const inputList = Array.from(formElement.querySelectorAll(obj.inputSelector));
     if (inputList.length === 0) {
       return
     }
   
-    const button = formElement.querySelector('.popup__button');
+    const button = formElement.querySelector(obj.submitButtonSelector);
   
-    toggleButtonState(inputList, button);
+    toggleButtonState(inputList, button,obj);
   
     inputList.forEach((input) => {
       input.addEventListener('input', function () {
-        checkInputValidity(formElement, input);
-        toggleButtonState(inputList, button);
+        checkInputValidity(formElement, input,obj);
+        toggleButtonState(inputList, button,obj);
       })
     })
   }
   
   
   
-  const showInputError = (formElement, input, errorMessage) => {
+  const showInputError = (formElement, input, errorMessage,obj) => {
     const errorElement = formElement.querySelector(`.${input.id}-error`);
-    input.classList.add('popup__input_type_error');
+    input.classList.add(obj.inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add('popup__input-error_active');
+    errorElement.classList.add(obj.errorClass);
   };
   
-  const hideInputError = (formElement, input) => {
+  const hideInputError = (formElement, input,obj) => {
     input.valid = true;
     const errorElement = formElement.querySelector(`.${input.id}-error`);
-    input.classList.remove('popup__input_type_error');
-    errorElement.classList.remove('popup__input-error_active');
+    input.classList.remove(obj.inputErrorClass);
+    errorElement.classList.remove(obj.errorClass);
     errorElement.textContent = '';
   
   }
   
-  const checkInputValidity = (formElement, input) => {
+  const checkInputValidity = (formElement, input,obj) => {
     if (input.validity.patternMismatch) {
       input.setCustomValidity(input.dataset.errorMessage);
     } else {
@@ -56,19 +69,19 @@ const toggleButtonState = (inputList, buttonElement) => {
     }
   
     if (!input.validity.valid) {
-      showInputError(formElement, input, input.validationMessage);
+      showInputError(formElement, input, input.validationMessage,obj);
     } else {
-      hideInputError(formElement, input);
+      hideInputError(formElement, input,obj);
     }
   };
-  const enableValidation = () => {  //Создаем массив из форм
-    const formList = Array.from(content.querySelectorAll('.popup'));
+  const enableValidation = (obj) => {  //Создаем массив из форм
+    const formList = Array.from(content.querySelectorAll(obj.formSelector));
     formList.forEach((element) => {
       element.addEventListener('submit', (evt) => {
         evt.preventDefault();
       })
   
-      setEventListeners(element);
+      setEventListeners(element,obj);
     })
   }
   const hasInvalidInput = (inputList) => {
@@ -77,4 +90,5 @@ const toggleButtonState = (inputList, buttonElement) => {
     })
   }
   
-  export {hideInputError,enableValidation};
+  export {hideInputError,enableValidation,resetValidity};
+

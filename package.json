@@ -22,7 +22,10 @@
     "postcss-loader": "^7.3.2",
     "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1",
-    "webpack-dev-server": "^4.15.0"
+    "webpack-dev-server": "^4.15.0",
+    "webpack-node-externals": "^3.0.0"
+  },"resolutions": {
+    "uglify-js": "npm:terser"
   },
   "dependencies": {
     "acorn": "^8.8.2",

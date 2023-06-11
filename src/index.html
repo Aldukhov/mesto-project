@@ -19,7 +19,7 @@
         <main>
             <section class="profile">
                 <div class="profile__profile-info">
-                    <img class="profile__avatar" src="<%=require('./images/avatar-image.jpg')%>"  alt="Аватар">
+                    <img class="profile__avatar"   alt="Аватар">
                     <div>
                         <div class="profile__inform">
                             <h1 class="profile__name" id="name"></h1>
@@ -41,7 +41,7 @@
             <section class="popup popup_edit">
                 <div class="popup__container popup__container_edit">
 
-                    <form name="edit" class="popup__form">
+                    <form name="edit" class="popup__form popup__form_profile" novalidate>
                         <button type="button" class="popup__icon"></button>
 
                         <h2 class="popup__heading">Редактировать профиль</h2>
@@ -49,7 +49,7 @@
                             <input pattern="[A-Za-zА-Яа-яЁё\s\-]+"
                                 data-error-message="Разрешены латинские и кириллические буквы, знаки дефиса и пробелы"
                                 type="text" name="name" placeholder="Имя" class="popup__input" id="popup_name" required
-                                minlength="2" maxlength="40" novalidate>
+                                minlength="2" maxlength="40" >
                             <span class="popup__input-error popup_name-error"></span>
                         </label>
                         <label class="popup__field">
@@ -57,7 +57,7 @@
                                  pattern="[\-A-Za-zА-Яа-яЁё\s\-]+"
                                 data-error-message="Разрешены латинские и кириллические буквы, знаки дефиса и пробелы"
                                 type="text" name="post" placeholder="Должность" class="popup__input" id="popup_post"
-                                required minlength="2" maxlength="200" novalidate>
+                                required minlength="2" maxlength="200">
                             <span class="popup__input-error popup_post-error"></span>
                         </label>
                         <button type="submit" class="popup__button">Сохранить</button>
@@ -70,13 +70,13 @@
             <section class="popup popup_add">
                 <div class="popup__container popup__container_add">
 
-                    <form name="add" class="popup__cards">
+                    <form name="add" class="popup__form popup__form_cards" novalidate>
                         <button type="button" class="popup__icon"></button>
 
                         <h2 class="popup__heading">Новое место</h2>
                         <label class="popup__field">
                             <input type="text" name="title" placeholder="Название" class="popup__input" id="popup_title"
-                            pattern="[\-A-Za-zА-Яа-яЁё\s\-]+" data-error-message="Разрешены латинские и кириллические буквы, знаки дефиса и пробелы" required>
+                            pattern="[\-A-Za-zА-Яа-яЁё\s\-]+" data-error-message="Разрешены латинские и кириллические буквы, знаки дефиса и пробелы" minlength='2' maxlength='200' required>
                                 <span class="popup__input-error popup_title-error"></span>    
                         </label>
                         <label class="popup__field">
@@ -112,8 +112,11 @@
             <button type="button" class="elements__trash"></button>
             <div class="elements__caption">
                 <h2 class="elements__name"></h2>
+            <div class = "elements__likes">
                 <button type="button" class="elements__like"></button>
-            </div>
+                <p class ="elements__like-qantity"></p>
+           </div> 
+        </div>
         </div>
     </template>
 </body>

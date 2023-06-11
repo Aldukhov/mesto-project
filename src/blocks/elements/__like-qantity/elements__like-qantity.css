@@ -1,0 +1,9 @@
+.elements__like-qantity {
+    text-align: center;
+    display:none;
+    margin-top: 3px;
+    margin-right: 15px;
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
