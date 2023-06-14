@@ -2,7 +2,6 @@ import "../pages/index.css";
 import * as pop from './modal.js';
 import { cardLoad } from "./card";
 import { enableValidation } from "./validate";
-import { loadDataCards, loadDataUser } from "./API";
 
 const validObj = {
   formSelector: '.popup__form',
@@ -128,9 +127,6 @@ popupFormPerson.addEventListener('submit', pop.handlePopupProfile);
 popupFormCard.addEventListener('submit', pop.addNewCard);
 
 cardLoad();
-
-//loadDataCards();
-
 
 enableValidation(validObj); 
 

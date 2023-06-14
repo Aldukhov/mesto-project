@@ -3,23 +3,13 @@ import { initialCards} from "./index.js";
 
 const cardsContainer = document.querySelector('.elements'); // создание контейнера
 
-function createCard(title, input,likeQantity,id) {
+function createCard(title, input) {
   const cardTemplate = document.querySelector('#card-template').content; // создание template
   const card = cardTemplate.querySelector('.elements__card').cloneNode(true); // клонирование элемента
   card.querySelector('.elements__img').setAttribute('src', title);
   card.querySelector('.elements__img').setAttribute('alt', input);
   card.querySelector('.elements__name').textContent = input;
-/*
-  if(likeQantity.length>0) {
-  card.querySelector('.elements__like-qantity').textContent = likeQantity.length;
-  card.querySelector('.elements__like-qantity').classList.add('elements__like-qantity_active');
-  }
 
-  if(id === '22c6d0525cf8eec9fa356c3d') {
-    card.querySelector('.elements__trash').classList.add('elements__trash_active');
-  }
-
-  */
   deleteCard(card);
   like(card);
   openPicture(card);

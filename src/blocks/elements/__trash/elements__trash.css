@@ -1,4 +1,5 @@
 .elements__trash {
+    display: block;
     background: transparent;
     background-image: url('./../../../images/trash.svg');
     position: absolute;
@@ -9,7 +10,6 @@
     border: none;
     background-repeat: no-repeat;
     cursor: pointer;
-    display: none;
     opacity: 1;
     transition: opacity 0.3s linear;
     right: 20px;

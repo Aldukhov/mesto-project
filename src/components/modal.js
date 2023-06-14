@@ -8,7 +8,6 @@ import {
 } from './index.js';
 import { resetValidity } from './validate.js';
 import { createCard, cardsContainer } from './card.js';
-import { saveOnServUser,saveOnServCard } from './API.js';
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
@@ -28,9 +27,11 @@ function resetProfile(validObj) {
 
 function closePopupEsc(evt) {
   const popup = document.querySelector('.popup_opened');
+  if(popup !== undefined) {
   if ((evt.key === 'Escape')) {
     closePopup(popup);
   }
+}
 }
 
 function resetImage(validObj) {
@@ -44,7 +45,6 @@ function handlePopupProfile(evt) {
   evt.preventDefault();
   profileName.textContent = popupNameInput.value;
   profilePost.textContent = popupPostInput.value;
-  //saveOnServUser();
   closePopup(popupPerson);
 }
 
@@ -67,8 +67,7 @@ function addNewCard(evt) {
 
   evt.preventDefault();
   cardsContainer.prepend(createCard(popupLinkInput.value
-    , popupTitleInput.value,0,'22c6d0525cf8eec9fa356c3d'));
- //  saveOnServCard();
+    , popupTitleInput.value));
   closePopup(popupAddImage);
 }
 
