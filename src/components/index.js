@@ -1,6 +1,6 @@
 import "../pages/index.css";
 import * as pop from './modal.js';
-import { cardLoad } from "./card";
+import { cardsContainer,createCard } from "./card";
 import { enableValidation } from "./validate";
 import { loadDataCards, loadDataUser } from "./API";
 
@@ -22,7 +22,7 @@ const profile = content.querySelector('.profile');
 const profileProfileInfo = profile.querySelector('.profile__profile-info');
 const profileInform = profileProfileInfo.querySelector('.profile__inform');
 
-//loadDataUser();
+
 
 //Главный узел для popup
 const popupPerson = content.querySelector('.popup_edit');
@@ -40,7 +40,7 @@ const editButton = profileInform.querySelector('.profile__edit');
 const closeButtons = content.querySelectorAll('.popup__icon');
 const profileAvatar = content.querySelector('.profile__avatar');   
 //Редактирование имени и информации
-
+loadDataUser(profileName,profilePost,profileAvatar);
 const popupFormPerson = popupContainPerson.querySelector('.popup__form');
 // Загрузка карточек на страницу
 
@@ -62,7 +62,17 @@ const editButtonCard = profile.querySelector('.profile__add');
 
 const overlaies = content.querySelectorAll('.popup');
 
+// Элемент popup avatar
 
+const popupAvatar = content.querySelector('.popup_avatar');
+const popupAvatarContainer = popupAvatar.querySelector('.popup__container_avatar');
+const popupAvatarLink = popupAvatarContainer.querySelector('#popup_link');
+const editButtonAvatar = profileProfileInfo.querySelector('.profile__avatar_edit');
+const popupFormAvatar = popupAvatarContainer.querySelector('.popup__form_avatar');
+const imgAvatar = profileProfileInfo.querySelector('.profile__avatar');
+// открытие popup avatar
+editButtonAvatar.addEventListener('click',function () {pop.resetImage(popupFormAvatar,validObj); pop.openPopup(popupAvatar)})
+popupFormAvatar.addEventListener('submit', pop.addNewAvatar);
 //Добавление Карточки 
 
 //Элемент popup input
@@ -70,43 +80,7 @@ const popupTitleInput = popupCardContain.querySelector('#popup_title');
 const popupLinkInput = popupCardContain.querySelector('#popup_link');
 const popupFormCard = popupCardContain.querySelector('.popup__form_cards');
 
-
-const arkhyz = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg', import.meta.url);
-const chelyabinsk = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg', import.meta.url);
-const ivanovo = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg', import.meta.url);
-const kamchatka = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg', import.meta.url);
-const kholmogorsky = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg', import.meta.url);
-const baikal = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg', import.meta.url);
-
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: arkhyz
-  },
-  {
-    name: 'Челябинская область',
-    link: chelyabinsk
-  },
-  {
-    name: 'Иваново',
-    link: ivanovo
-  },
-  {
-    name: 'Камчатка',
-    link: kamchatka
-  },
-  {
-    name: 'Холмогорский район',
-    link: kholmogorsky
-  },
-  {
-    name: 'Байкал',
-    link: baikal
-  }
-];
-
-
-editButtonCard.addEventListener('click', function () { pop.resetImage(validObj); pop.openPopup(popupAddImage) });
+editButtonCard.addEventListener('click', function () { pop.resetImage(popupFormCard,validObj); pop.openPopup(popupAddImage) });
 editButton.addEventListener('click', function () { pop.resetProfile(validObj); pop.openPopup(popupPerson) });
 
 closeButtons.forEach((button) => {
@@ -127,9 +101,8 @@ popupFormPerson.addEventListener('submit', pop.handlePopupProfile);
 
 popupFormCard.addEventListener('submit', pop.addNewCard);
 
-cardLoad();
 
-//loadDataCards();
+loadDataCards(cardsContainer,createCard);
 
 
 enableValidation(validObj); 
@@ -138,6 +111,5 @@ export { content, popupPicture, popupAddImage,
   popupFormCard, popupPerson,  
   popupNameInput, popupPostInput, profileName, 
   profilePost, popupImg, popupCaption, 
-  popupTitleInput,initialCards, popupLinkInput, profileAvatar};
+  popupTitleInput,popupLinkInput, profileAvatar,popupAvatar,popupAvatarLink,imgAvatar};
 
-  //

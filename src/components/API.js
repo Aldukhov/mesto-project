@@ -1,13 +1,15 @@
-import { profileName, profilePost, 
-    profileAvatar, popupLinkInput,popupTitleInput} from "./index.js";
-import { createCard, cardsContainer } from "./card.js";
+const config = {
 
-function loadDataUser() {
+    headers: {
+      authorization: 'fe25609f-c231-4126-8459-9808870edc8e',
+      'Content-Type': 'application/json'
+    }
+  }
 
-    return fetch('https://nomoreparties.co/v1/plus-cohort-25/users/me ', {
-        headers: {
-            authorization: 'fe25609f-c231-4126-8459-9808870edc8e'
-        }
+function loadDataUser(profileName,profilePost,profileAvatar) {
+
+    fetch('https://nomoreparties.co/v1/plus-cohort-25/users/me ', {
+        headers: config.headers
     })
         .then((res) => {
             if (res.ok) {
@@ -28,11 +30,11 @@ function loadDataUser() {
 
 }
 
-function loadDataCards() {
+
+
+function loadDataCards(cardsContainer,createCard) {
     return fetch('https://nomoreparties.co/v1/plus-cohort-25/cards', {
-        headers: {
-            authorization: 'fe25609f-c231-4126-8459-9808870edc8e'
-        }
+        headers: config.headers
     })
         .then((res) => {
             if (res.ok) {
@@ -42,11 +44,15 @@ function loadDataCards() {
             return Promise.reject(`Oops: ${res.status}`);
         })
         .then((data) => {
-            console.log(data);
             for (let i = 0; i < data.length; i++) {
 
-                cardsContainer.append(createCard(data[i].link, data[i].name,data[i].likes,data[i].owner._id));
+                const imges = cardsContainer.querySelectorAll('.elements__img');
+                if((!Array.from(imges).some((img)=> {return img.id === data[i]._id})))
+                  {
+                    cardsContainer.append(createCard(data[i]));
+                  }
             }
+          
         })
 
         .catch((err) => {
@@ -54,32 +60,144 @@ function loadDataCards() {
         })
 }
 
-function saveOnServUser () {
-    return fetch ('https://nomoreparties.co/v1/plus-cohort-25/users/me', {
+function saveOnServUser(profileName,profilePost,evt,popupPerson,renderLoading,closePopup) {
+    return fetch('https://nomoreparties.co/v1/plus-cohort-25/users/me', {
         method: 'PATCH',
-        headers: {
-            authorization: 'fe25609f-c231-4126-8459-9808870edc8e',
-            'Content-Type': 'application/json'
-        },  
+        headers: config.headers,
         body: JSON.stringify({
             name: profileName.textContent,
             about: profilePost.textContent
-          })
+        })
+    }) .then((res) => {
+        if (res.ok) {
+            return 
+            
+        }
+
+        return Promise.reject(`Oops: ${res.status}`);
     })
+    .catch((err) => {
+        console.log(err);
+    })
+    .finally(() => {
+        renderLoading(false,evt.target.querySelector('.popup__button'));
+        closePopup(popupPerson);
+      });
 }
 
-function saveOnServCard () {
-    return fetch ('https://nomoreparties.co/v1/plus-cohort-25/cards', {
-        method: 'POST', 
-        headers: {
-            authorization: 'fe25609f-c231-4126-8459-9808870edc8e',
-            'Content-Type': 'application/json'
-        },
+function saveOnServCard(popupLinkInput, popupTitleInput,cardsContainer,evt,popupAddImage,renderLoading,closePopup,createCard) {
+    return fetch('https://nomoreparties.co/v1/plus-cohort-25/cards', {
+        method: 'POST',
+        headers: config.headers,
         body: JSON.stringify({
-            name: popupTitleInput.value, 
+            name: popupTitleInput.value,
             link: popupLinkInput.value
         })
+    })  .then((res) => {
+        if (res.ok) {
+            return loadDataCards(cardsContainer,createCard);
+            
+        }
+
+        return Promise.reject(`Oops: ${res.status}`);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+
+    .finally(()=> {
+        renderLoading(false,evt.target.querySelector('.popup__button'));
+        closePopup(popupAddImage);
     })
 }
 
-export { loadDataUser, loadDataCards,saveOnServUser,saveOnServCard };
+function addLike(cardId,card,likeQant) {
+
+    fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/likes/${cardId}`, {
+        method: 'PUT',
+        headers: config.headers
+    }) .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+
+        return Promise.reject(`Oops: ${res.status}`);
+    })
+    .then((data) => {
+        likeQant(data.likes,card);
+    })
+
+    .catch((err) => {
+        console.log(err);
+    })
+}
+
+function deleteLike(cardId,card,likeQant) {
+    fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/likes/${cardId}`, {
+        method: 'DELETE',
+        headers: config.headers
+    }) .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+
+        return Promise.reject(`Oops: ${res.status}`);
+    })
+    .then((data) => {
+        likeQant(data.likes,card);
+    })
+
+    .catch((err) => {
+        console.log(err);
+    })
+}
+
+function saveOnServAvatar(avatar,imgAvatar,evt,popupAvatar,renderLoading,closePopup) {
+    return fetch(`https://nomoreparties.co/v1/plus-cohort-25/users/me/avatar`, {
+        method: 'PATCH',
+        headers: config.headers, body: JSON.stringify({
+            avatar: avatar
+            
+        })
+    }) .then((res) => {
+        if (res.ok) {
+            return imgAvatar.setAttribute('src',avatar); 
+        }
+
+        return Promise.reject(`Oops: ${res.status}`);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    .finally(()=> {
+        renderLoading(false,evt.target.querySelector('.popup__button'));
+  closePopup(popupAvatar);
+    })
+    
+}
+
+function deleteCardAPI(cardId,listItem) {
+    return fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/${cardId}`, {
+        method: 'DELETE',
+        headers: config.headers,
+    }) .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+
+        return Promise.reject(`Oops: ${res.status}`);
+    })
+    .then((data) => {
+        likeQant(data.likes,card);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    .finally(()=>{
+        listItem.remove();
+    })
+    
+
+}
+
+export { loadDataUser, loadDataCards, saveOnServUser, saveOnServCard,addLike,deleteLike,saveOnServAvatar,deleteCardAPI };

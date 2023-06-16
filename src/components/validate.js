@@ -15,7 +15,7 @@ const toggleButtonState = (inputList, buttonElement,obj) => {
   function resetValidity(popup,obj) {
     
     const inputList = Array.from(popup.querySelectorAll('.popup__input'));
-  
+    toggleButtonState(inputList,popup.querySelector('.popup__button'),obj);
     inputList.forEach((input) => {
   
       hideInputError(popup, input,obj);
