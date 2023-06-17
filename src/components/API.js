@@ -1,3 +1,5 @@
+import { renderLoading,closePopup } from "./modal";
+
 const config = {
 
     headers: {
@@ -6,7 +8,7 @@ const config = {
     }
   }
 
-function loadDataUser(profileName,profilePost,profileAvatar) {
+function loadDataUser(changeProfileData,cardsContainer,createCard,loadDataCards) {
 
     fetch('https://nomoreparties.co/v1/plus-cohort-25/users/me ', {
         headers: config.headers
@@ -19,9 +21,8 @@ function loadDataUser(profileName,profilePost,profileAvatar) {
             return Promise.reject(`Oops: ${res.status}`);
         })
         .then((data) => {
-            profileName.textContent = data.name;
-            profilePost.textContent = data.about;
-            profileAvatar.src = data.avatar;
+            changeProfileData(data);
+            loadDataCards(cardsContainer,createCard);
         })
 
         .catch((err) => {
@@ -32,7 +33,7 @@ function loadDataUser(profileName,profilePost,profileAvatar) {
 
 
 
-function loadDataCards(cardsContainer,createCard) {
+function loadDataCards(cardsContainer,createCard,addMethond = 'append') {
     return fetch('https://nomoreparties.co/v1/plus-cohort-25/cards', {
         headers: config.headers
     })
@@ -46,11 +47,7 @@ function loadDataCards(cardsContainer,createCard) {
         .then((data) => {
             for (let i = 0; i < data.length; i++) {
 
-                const imges = cardsContainer.querySelectorAll('.elements__img');
-                if((!Array.from(imges).some((img)=> {return img.id === data[i]._id})))
-                  {
                     cardsContainer.append(createCard(data[i]));
-                  }
             }
           
         })
@@ -60,18 +57,19 @@ function loadDataCards(cardsContainer,createCard) {
         })
 }
 
-function saveOnServUser(profileName,profilePost,evt,popupPerson,renderLoading,closePopup) {
+function saveOnServUser(popupNameInput,popupPostInput,profileName,profilePost,evt,popupPerson) {
     return fetch('https://nomoreparties.co/v1/plus-cohort-25/users/me', {
         method: 'PATCH',
         headers: config.headers,
         body: JSON.stringify({
-            name: profileName.textContent,
-            about: profilePost.textContent
+            name: popupNameInput.value,
+            about: popupPostInput.value
         })
     }) .then((res) => {
         if (res.ok) {
-            return 
-            
+            profileName.textContent = popupNameInput.value;
+            profilePost.textContent = popupPostInput.value;
+            return
         }
 
         return Promise.reject(`Oops: ${res.status}`);
@@ -85,7 +83,7 @@ function saveOnServUser(profileName,profilePost,evt,popupPerson,renderLoading,cl
       });
 }
 
-function saveOnServCard(popupLinkInput, popupTitleInput,cardsContainer,evt,popupAddImage,renderLoading,closePopup,createCard) {
+function saveOnServCard(popupLinkInput, popupTitleInput,cardsContainer,evt,popupAddImage,createCard) {
     return fetch('https://nomoreparties.co/v1/plus-cohort-25/cards', {
         method: 'POST',
         headers: config.headers,
@@ -95,11 +93,13 @@ function saveOnServCard(popupLinkInput, popupTitleInput,cardsContainer,evt,popup
         })
     })  .then((res) => {
         if (res.ok) {
-            return loadDataCards(cardsContainer,createCard);
-            
+            return res.json();        
         }
 
         return Promise.reject(`Oops: ${res.status}`);
+    })
+    .then ((data)=> {
+        cardsContainer.prepend(createCard(data));
     })
     .catch((err) => {
         console.log(err);
@@ -111,7 +111,7 @@ function saveOnServCard(popupLinkInput, popupTitleInput,cardsContainer,evt,popup
     })
 }
 
-function addLike(cardId,card,likeQant) {
+function addLike(cardId,card,likeQant,evtTarget) {
 
     fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/likes/${cardId}`, {
         method: 'PUT',
@@ -125,6 +125,7 @@ function addLike(cardId,card,likeQant) {
     })
     .then((data) => {
         likeQant(data.likes,card);
+        evtTarget.classList.add('elements__like_active');
     })
 
     .catch((err) => {
@@ -132,7 +133,7 @@ function addLike(cardId,card,likeQant) {
     })
 }
 
-function deleteLike(cardId,card,likeQant) {
+function deleteLike(cardId,card,likeQant,evtTarget) {
     fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/likes/${cardId}`, {
         method: 'DELETE',
         headers: config.headers
@@ -144,6 +145,7 @@ function deleteLike(cardId,card,likeQant) {
         return Promise.reject(`Oops: ${res.status}`);
     })
     .then((data) => {
+        evtTarget.classList.remove('elements__like_active');
         likeQant(data.likes,card);
     })
 
@@ -152,7 +154,7 @@ function deleteLike(cardId,card,likeQant) {
     })
 }
 
-function saveOnServAvatar(avatar,imgAvatar,evt,popupAvatar,renderLoading,closePopup) {
+function saveOnServAvatar(avatar,imgAvatar,evt,popupAvatar) {
     return fetch(`https://nomoreparties.co/v1/plus-cohort-25/users/me/avatar`, {
         method: 'PATCH',
         headers: config.headers, body: JSON.stringify({

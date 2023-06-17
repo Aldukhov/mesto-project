@@ -3,7 +3,6 @@ import { content } from "./index.js";
 const toggleButtonState = (inputList, buttonElement,obj) => {
 
     if (hasInvalidInput(inputList)) {
-      // buttonElement.setAttribute('disabled');
       buttonElement.disabled = true;
       buttonElement.classList.add(obj.inactiveButtonClass);
     } else {
@@ -11,11 +10,11 @@ const toggleButtonState = (inputList, buttonElement,obj) => {
       buttonElement.classList.remove(obj.inactiveButtonClass);
     }
   }
-  
+    
   function resetValidity(popup,obj) {
     
-    const inputList = Array.from(popup.querySelectorAll('.popup__input'));
-    toggleButtonState(inputList,popup.querySelector('.popup__button'),obj);
+    const inputList = Array.from(popup.querySelectorAll(obj.inputSelector));
+    toggleButtonState(inputList,popup.querySelector(obj.submitButtonSelector),obj);
     inputList.forEach((input) => {
   
       hideInputError(popup, input,obj);

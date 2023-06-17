@@ -1,5 +1,6 @@
 import { openPicture } from "./modal.js";
 import { addLike,deleteLike,deleteCardAPI } from "./API.js";
+import { userId } from "./index.js";
 
 const cardsContainer = document.querySelector('.elements'); // создание контейнера
 
@@ -15,7 +16,7 @@ function createCard(picture) {
   if(picture.likes.length>0) {
     likeQant(picture.likes,card);
 
-   if(picture.likes.some(element => element._id === '22c6d0525cf8eec9fa356c3d'))
+   if(picture.likes.some(element => element._id === userId.id))
    {
     card.querySelector('.elements__like').classList.add('elements__like_active');
    }
@@ -27,7 +28,8 @@ function createCard(picture) {
 
   deleteCard(card,picture._id);
   like(card,picture);
-  openPicture(card);
+  card.querySelector('.elements__img').addEventListener('click', function (evt) {
+  openPicture(evt); });
 
   return card;
 }
@@ -48,12 +50,10 @@ function like(card,picture) {  // лайк
    
     const evtTarget = evt.target;
     if(evtTarget.classList.contains('elements__like_active')){
-       deleteLike(picture._id,card,likeQant);
-       evtTarget.classList.remove('elements__like_active');
+       deleteLike(picture._id,card,likeQant,evtTarget);
 
     } else {
-      addLike(picture._id,card,likeQant);
-    evtTarget.classList.add('elements__like_active');
+      addLike(picture._id,card,likeQant,evtTarget);
     
     }
 

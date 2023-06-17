@@ -1,11 +1,10 @@
 import {
   popupNameInput, popupPerson,
   popupPostInput, profileName, profilePost,
-  popupImg, popupCaption,popupPicture, popupAddImage,popupAvatar,popupAvatarLink,imgAvatar,popupLinkInput, popupTitleInput
+  popupImg, popupCaption,popupPicture, 
+ profileAvatar,userId
 } from './index.js';
 import { resetValidity } from './validate.js';
-import { cardsContainer,createCard } from './card.js';
-import { saveOnServUser,saveOnServCard,saveOnServAvatar} from './API.js';
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
@@ -24,8 +23,9 @@ function resetProfile(validObj) {
 }
 
 function closePopupEsc(evt) {
-  const popup = document.querySelector('.popup_opened');
+  
   if ((evt.key === 'Escape')) {
+    const popup = document.querySelector('.popup_opened');
     closePopup(popup);
   }
 }
@@ -37,18 +37,15 @@ function resetImage(popupForm,validObj) {
 }
 
 
-function handlePopupProfile(evt) {
-  evt.preventDefault();
-  renderLoading(true,evt.target.querySelector('.popup__button'));
-  profileName.textContent = popupNameInput.value;
-  profilePost.textContent = popupPostInput.value;
-  saveOnServUser(profileName,profilePost,evt,popupPerson,renderLoading,closePopup);
+function changeProfileData(data) {
+  profileName.textContent = data.name;
+  profilePost.textContent = data.about;
+  profileAvatar.src = data.avatar;
+  userId.id = data._id;
 }
 
 
-function openPicture(card) {
-
-  card.querySelector('.elements__img').addEventListener('click', function (evt) {
+function openPicture(evt) {
 
     popupImg.setAttribute('src', evt.target.getAttribute('src'));
 
@@ -56,7 +53,6 @@ function openPicture(card) {
 
     popupCaption.textContent = evt.target.getAttribute('alt');
     openPopup(popupPicture);
-  });
 };
 
 function renderLoading(isLoading,button) {
@@ -67,18 +63,7 @@ function renderLoading(isLoading,button) {
   }
 }
 
-function addNewCard(evt) {
-  evt.preventDefault();
-  renderLoading(true,evt.target.querySelector('.popup__button'));
-  saveOnServCard(popupLinkInput, popupTitleInput,cardsContainer,evt,popupAddImage,renderLoading,closePopup,createCard); 
-  
-}
 
-function addNewAvatar(evt) {
-  evt.preventDefault();
-renderLoading(true,evt.target.querySelector('.popup__button'));
-  saveOnServAvatar(popupAvatarLink.value,imgAvatar,evt,popupAddImage,renderLoading,closePopup);
-  closePopup(popupAvatar);
-}
-
-export { openPicture, addNewCard, handlePopupProfile, resetImage, resetValidity, resetProfile, openPopup, closePopup,addNewAvatar };
+export {changeProfileData,openPicture,
+  resetImage, resetValidity, resetProfile, 
+  openPopup, closePopup,renderLoading };
