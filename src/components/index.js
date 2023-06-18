@@ -2,7 +2,7 @@ import "../pages/index.css";
 import * as pop from './modal.js';
 import { cardsContainer,createCard } from "./card";
 import { enableValidation } from "./validate";
-import { loadDataCards, loadDataUser,saveOnServUser,saveOnServCard } from "./API";
+import { loadDataCards, loadDataUser,saveOnServUser,saveOnServCard,saveOnServAvatar } from "./API";
 
 import {content, popupPicture, popupAddImage, 
   popupFormCard, popupPerson,  
@@ -26,7 +26,24 @@ const buttonEdit = profileInform.querySelector('.profile__edit');
 // находим все крестики проекта по универсальному селектор
 const closeButtons = content.querySelectorAll('.popup__icon');  
 //Редактирование имени и информации
-loadDataUser(pop.changeProfileData,cardsContainer,createCard,loadDataCards);
+loadDataUser()
+.then((data) => {
+  pop.changeProfileData(data);
+  loadDataCards().then((data) => {
+    for (let i = 0; i < data.length; i++) {
+
+            cardsContainer.append(createCard(data[i]));
+    }
+  
+})
+
+.catch((err) => {
+    console.log(err);
+});
+})
+.catch((err) => {
+  console.log(err);
+});
 
 const popupFormPerson = popupContainPerson.querySelector('.popup__form');
 // Загрузка карточек на страницу
@@ -65,7 +82,22 @@ overlaies.forEach((overlay) => {
 function handlePopupProfile(evt) {
   evt.preventDefault();
   pop.renderLoading(true,evt.target.querySelector('.popup__button'));
-  saveOnServUser(popupNameInput,popupPostInput,profileName,profilePost,evt,popupPerson,pop.renderLoading,pop.closePopup);
+  saveOnServUser(popupNameInput,popupPostInput).then((res) => {
+    if (res.ok) {
+        profileName.textContent = popupNameInput.value;
+        profilePost.textContent = popupPostInput.value;
+        return
+    }
+
+    return Promise.reject(`Oops: ${res.status}`);
+})
+.catch((err) => {
+    console.log(err);
+})
+.finally(() => {
+  pop.renderLoading(false,evt.target.querySelector('.popup__button'));
+    pop.closePopup(popupPerson);
+  });;
 }
 
 popupFormPerson.addEventListener('submit', handlePopupProfile);
@@ -75,15 +107,31 @@ popupFormCard.addEventListener('submit', addNewCard);
 function addNewCard(evt) {
   evt.preventDefault();
   pop.renderLoading(true,evt.target.querySelector('.popup__button'));
-  saveOnServCard(popupLinkInput, popupTitleInput,cardsContainer,evt,popupAddImage,createCard); 
+  saveOnServCard(popupLinkInput, popupTitleInput).then ((data)=> {
+    cardsContainer.prepend(createCard(data));
+})
+.catch((err) => {
+    console.log(err);
+})
+
+.finally(()=> {
+  pop.renderLoading(false,evt.target.querySelector('.popup__button'));
+  pop.closePopup(popupAddImage);
+}); 
   
 }
 
 function addNewAvatar(evt) {
   evt.preventDefault();
 pop.renderLoading(true,evt.target.querySelector('.popup__button'));
-  saveOnServAvatar(popupAvatarLink.value,imgAvatar,evt,popupAddImage);
-  closePopup(popupAvatar);
+  saveOnServAvatar(popupAvatarLink.value,imgAvatar).catch((err) => {
+    console.log(err);
+})
+.finally(()=> {
+    pop.renderLoading(false,evt.target.querySelector('.popup__button'));
+    pop.closePopup(popupAvatar);
+});
+
 }
 
 enableValidation(validObj); 

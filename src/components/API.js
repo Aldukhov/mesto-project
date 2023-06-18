@@ -8,9 +8,9 @@ const config = {
     }
   }
 
-function loadDataUser(changeProfileData,cardsContainer,createCard,loadDataCards) {
+function loadDataUser() {
 
-    fetch('https://nomoreparties.co/v1/plus-cohort-25/users/me ', {
+   return fetch('https://nomoreparties.co/v1/plus-cohort-25/users/me ', {
         headers: config.headers
     })
         .then((res) => {
@@ -20,20 +20,12 @@ function loadDataUser(changeProfileData,cardsContainer,createCard,loadDataCards)
 
             return Promise.reject(`Oops: ${res.status}`);
         })
-        .then((data) => {
-            changeProfileData(data);
-            loadDataCards(cardsContainer,createCard);
-        })
-
-        .catch((err) => {
-            console.log(err);
-        })
-
+    
 }
 
 
 
-function loadDataCards(cardsContainer,createCard,addMethond = 'append') {
+function loadDataCards() {
     return fetch('https://nomoreparties.co/v1/plus-cohort-25/cards', {
         headers: config.headers
     })
@@ -44,20 +36,9 @@ function loadDataCards(cardsContainer,createCard,addMethond = 'append') {
 
             return Promise.reject(`Oops: ${res.status}`);
         })
-        .then((data) => {
-            for (let i = 0; i < data.length; i++) {
-
-                    cardsContainer.append(createCard(data[i]));
-            }
-          
-        })
-
-        .catch((err) => {
-            console.log(err);
-        })
 }
 
-function saveOnServUser(popupNameInput,popupPostInput,profileName,profilePost,evt,popupPerson) {
+function saveOnServUser(popupNameInput,popupPostInput) {
     return fetch('https://nomoreparties.co/v1/plus-cohort-25/users/me', {
         method: 'PATCH',
         headers: config.headers,
@@ -65,25 +46,10 @@ function saveOnServUser(popupNameInput,popupPostInput,profileName,profilePost,ev
             name: popupNameInput.value,
             about: popupPostInput.value
         })
-    }) .then((res) => {
-        if (res.ok) {
-            profileName.textContent = popupNameInput.value;
-            profilePost.textContent = popupPostInput.value;
-            return
-        }
-
-        return Promise.reject(`Oops: ${res.status}`);
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-    .finally(() => {
-        renderLoading(false,evt.target.querySelector('.popup__button'));
-        closePopup(popupPerson);
-      });
+    }) 
 }
 
-function saveOnServCard(popupLinkInput, popupTitleInput,cardsContainer,evt,popupAddImage,createCard) {
+function saveOnServCard(popupLinkInput, popupTitleInput) {
     return fetch('https://nomoreparties.co/v1/plus-cohort-25/cards', {
         method: 'POST',
         headers: config.headers,
@@ -98,22 +64,12 @@ function saveOnServCard(popupLinkInput, popupTitleInput,cardsContainer,evt,popup
 
         return Promise.reject(`Oops: ${res.status}`);
     })
-    .then ((data)=> {
-        cardsContainer.prepend(createCard(data));
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-
-    .finally(()=> {
-        renderLoading(false,evt.target.querySelector('.popup__button'));
-        closePopup(popupAddImage);
-    })
+    
 }
 
-function addLike(cardId,card,likeQant,evtTarget) {
+function addLike(cardId) {
 
-    fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/likes/${cardId}`, {
+   return fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/likes/${cardId}`, {
         method: 'PUT',
         headers: config.headers
     }) .then((res) => {
@@ -123,18 +79,11 @@ function addLike(cardId,card,likeQant,evtTarget) {
 
         return Promise.reject(`Oops: ${res.status}`);
     })
-    .then((data) => {
-        likeQant(data.likes,card);
-        evtTarget.classList.add('elements__like_active');
-    })
-
-    .catch((err) => {
-        console.log(err);
-    })
+    
 }
 
-function deleteLike(cardId,card,likeQant,evtTarget) {
-    fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/likes/${cardId}`, {
+function deleteLike(cardId) {
+ return  fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/likes/${cardId}`, {
         method: 'DELETE',
         headers: config.headers
     }) .then((res) => {
@@ -144,17 +93,9 @@ function deleteLike(cardId,card,likeQant,evtTarget) {
 
         return Promise.reject(`Oops: ${res.status}`);
     })
-    .then((data) => {
-        evtTarget.classList.remove('elements__like_active');
-        likeQant(data.likes,card);
-    })
-
-    .catch((err) => {
-        console.log(err);
-    })
 }
 
-function saveOnServAvatar(avatar,imgAvatar,evt,popupAvatar) {
+function saveOnServAvatar(avatar,imgAvatar) {
     return fetch(`https://nomoreparties.co/v1/plus-cohort-25/users/me/avatar`, {
         method: 'PATCH',
         headers: config.headers, body: JSON.stringify({
@@ -168,17 +109,10 @@ function saveOnServAvatar(avatar,imgAvatar,evt,popupAvatar) {
 
         return Promise.reject(`Oops: ${res.status}`);
     })
-    .catch((err) => {
-        console.log(err);
-    })
-    .finally(()=> {
-        renderLoading(false,evt.target.querySelector('.popup__button'));
-  closePopup(popupAvatar);
-    })
     
 }
 
-function deleteCardAPI(cardId,listItem) {
+function deleteCardAPI(cardId) {
     return fetch(`https://nomoreparties.co/v1/plus-cohort-25/cards/${cardId}`, {
         method: 'DELETE',
         headers: config.headers,
@@ -188,15 +122,6 @@ function deleteCardAPI(cardId,listItem) {
         }
 
         return Promise.reject(`Oops: ${res.status}`);
-    })
-    .then((data) => {
-        likeQant(data.likes,card);
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-    .finally(()=>{
-        listItem.remove();
     })
     
 
