@@ -28,7 +28,7 @@ function createCard(picture) {
   deleteCard(card, picture._id);
   like(card, picture);
   card.querySelector('.elements__img').addEventListener('click', function (evt) {
-    openPicture(evt);
+    openPicture(card);
   });
 
   return card;

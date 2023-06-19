@@ -45,13 +45,13 @@ function changeProfileData(data) {
 }
 
 
-function openPicture(evt) {
+function openPicture(card) {
 
-    popupImg.setAttribute('src', evt.target.getAttribute('src'));
+    popupImg.setAttribute('src', card.getAttribute('src'));
 
-    popupImg.setAttribute('alt', evt.target.nextElementSibling.textContent);
+    popupImg.setAttribute('alt', card.getAttribute('alt'));
 
-    popupCaption.textContent = evt.target.getAttribute('alt');
+    popupCaption.textContent = card.getAttribute('alt');
     openPopup(popupPicture);
 };
 

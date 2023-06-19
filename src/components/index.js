@@ -49,7 +49,7 @@ const popupFormPerson = popupContainPerson.querySelector('.popup__form');
 // Загрузка карточек на страницу
 
 // Открытие / Закрытие popup
-const ButtonEditCard = profile.querySelector('.profile__add');
+const buttonEditCard = profile.querySelector('.profile__add');
 
 const overlaies = content.querySelectorAll('.popup');
 
@@ -62,7 +62,7 @@ buttonOpenPopupAvatar.addEventListener('click',function () {pop.resetImage(popup
 popupFormAvatar.addEventListener('submit',addNewAvatar);
 //Добавление Карточки 
 
-ButtonEditCard.addEventListener('click', function () { pop.resetImage(popupFormCard,validObj); pop.openPopup(popupAddImage) });
+buttonEditCard.addEventListener('click', function () { pop.resetImage(popupFormCard,validObj); pop.openPopup(popupAddImage) });
 buttonEdit.addEventListener('click', function () { pop.resetProfile(validObj); pop.openPopup(popupPerson) });
 
 closeButtons.forEach((button) => {

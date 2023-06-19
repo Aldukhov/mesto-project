@@ -1,5 +1,5 @@
 
-let userId = [ ];
+let userId = {};
 // Выбор верхних узлов проекта. 
 const page = document.querySelector('.page');
 const content = page.querySelector('.content');
