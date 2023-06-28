@@ -28,19 +28,27 @@ export default class Card {
     imgCard.alt = this._name;
     imgCard.id = this._id;
     this._card.querySelector('.elements__name').textContent = this._name;
-    if (this._ownerId === '22c6d0525cf8eec9fa356c3d') {
-      this._card.querySelector('.elements__trash').classList.add('elements__trash_active');
-    };
-    if (this._likes.length > 0) {
-      this._likeQant(this._likes, this._card);
-      if (this._likes.some(element => element._id === userId.id)) {
-        this._card.querySelector('.elements__like').classList.add('elements__like_active');
-      }
-    };
+    this._checkAuthor(this._card);
+    this._checkLike(this._card);
     this._deleteCard(this._card, this._id);
     this._like(this._card);
     this._setEventListeners(imgCard, this._card);
     return this._card;
+  }
+
+  _checkAuthor(card) {
+    if (this._ownerId === '22c6d0525cf8eec9fa356c3d') {
+      card.querySelector('.elements__trash').classList.add('elements__trash_active');
+    };
+  }
+
+  _checkLike(card) {
+    if (this._likes.length > 0) {
+      this._likeQant(this._likes, card);
+      if (this._likes.some(element => element._id === userId.id)) {
+        card.querySelector('.elements__like').classList.add('elements__like_active');
+      }
+    };
   }
 
   _deleteCard(card, id) {
@@ -85,7 +93,7 @@ export default class Card {
   }
 
   _likeQant(likeQantity, card) {
-    if (likeQant.length === undefined) {
+    if (likeQantity.length === undefined) {
       card.querySelector('.elements__like-qantity').textContent = 0;
     } else {
       card.querySelector('.elements__like-qantity').textContent = likeQantity.length;
