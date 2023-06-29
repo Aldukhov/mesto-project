@@ -1,13 +1,10 @@
-
 import {
-  popupNameInput, popupPerson, popupFormCard,
+  popupNameInput, popupPerson,
   popupPostInput, profileName, profilePost,
-  popupImg, popupCaption,
-  popupTitleInput,
-  popupLinkInput, popupPicture, popupAddImage 
+  popupImg, popupCaption,popupPicture, 
+ profileAvatar,userId
 } from './index.js';
 import { resetValidity } from './validate.js';
-import { createCard, cardsContainer } from './card.js';
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
@@ -26,49 +23,47 @@ function resetProfile(validObj) {
 }
 
 function closePopupEsc(evt) {
-  const popup = document.querySelector('.popup_opened');
-  if(popup !== undefined) {
+  
   if ((evt.key === 'Escape')) {
+    const popup = document.querySelector('.popup_opened');
     closePopup(popup);
   }
 }
+
+function resetImage(popupForm,validObj) {
+  popupForm.reset();
+  resetValidity(popupForm, validObj);
+
 }
 
-function resetImage(validObj) {
-  popupFormCard.reset();
-  resetValidity(popupFormCard, validObj);
 
-}
-
-
-function handlePopupProfile(evt) {
-  evt.preventDefault();
-  profileName.textContent = popupNameInput.value;
-  profilePost.textContent = popupPostInput.value;
-  closePopup(popupPerson);
+function changeProfileData(data) {
+  profileName.textContent = data.name;
+  profilePost.textContent = data.about;
+  profileAvatar.src = data.avatar;
+  userId.id = data._id;
 }
 
 
 function openPicture(card) {
 
-  card.querySelector('.elements__img').addEventListener('click', function (evt) {
+    popupImg.setAttribute('src', card.getAttribute('src'));
 
-    popupImg.setAttribute('src', evt.target.getAttribute('src'));
+    popupImg.setAttribute('alt', card.getAttribute('alt'));
 
-    popupImg.setAttribute('alt', evt.target.nextElementSibling.textContent);
-
-    popupCaption.textContent = evt.target.getAttribute('alt');
+    popupCaption.textContent = card.getAttribute('alt');
     openPopup(popupPicture);
-  });
 };
 
-
-function addNewCard(evt) {
-
-  evt.preventDefault();
-  cardsContainer.prepend(createCard(popupLinkInput.value
-    , popupTitleInput.value));
-  closePopup(popupAddImage);
+function renderLoading(isLoading,button) {
+  if(isLoading) {
+    button.textContent = 'Сохранение..';
+  } else {
+    button.textContent = 'Сохранить';
+  }
 }
 
-export { openPicture, addNewCard, handlePopupProfile, resetImage, resetValidity, resetProfile, openPopup, closePopup };
+
+export {changeProfileData,openPicture,
+  resetImage, resetValidity, resetProfile, 
+  openPopup, closePopup,renderLoading };
