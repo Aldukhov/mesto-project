@@ -1,7 +1,8 @@
 import Popup from "./POPUP";
 
 export default class PopupWithForm extends Popup {
-    constructor (methodApi) {
+    constructor (methodApi, popupSelector) {
+        super(popupSelector);
         this._method = methodApi;
         this._form = this._popup.querySelector('.popup__form');
         this._inputArr = this._popup.querySelector('popup__input');
