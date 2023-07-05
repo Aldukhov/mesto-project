@@ -107,7 +107,3 @@ export default class Card {
   }
 
 }
-
-const cardsContainer = document.querySelector('.elements'); // создание контейнера
-
-export { createCard, cardsContainer, likeQant };

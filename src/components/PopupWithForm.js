@@ -1,16 +1,16 @@
-import Popup from "./POPUP";
+import Popup from "./Popup";
 
 export default class PopupWithForm extends Popup {
     constructor (popupSelector, methodApi) {
         super(popupSelector);
         this._method = methodApi;
         this._form = this._popup.querySelector('.popup__form');
-        this._inputArr = this._popup.querySelector('popup__input');
+        this._inputArr = this._popup.querySelector('.popup__input');
         this._button = this._popup.querySelector('.popup__button');
     }
     _getInputValues() {
         this._inputValuesList = {};
-        this._inputArr.forEach((input) => {
+        Array.from(this._inputArr).forEach((input) => {
             this._inputValuesList[input.name] = input.value;
         });
         return this._inputValuesList;

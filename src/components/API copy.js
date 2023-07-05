@@ -1,12 +1,12 @@
-export class Api {
+export default class Api {
     constructor(options) {
         this._baseUrl = options.baseUrl;
         this._headers = options.headers;
 
     }
 
-    getData(data) {
-        return fetch(`${this._baseUrl}/${data}`, {
+    getData(endOflink) {
+        return fetch(`${this._baseUrl}/${endOflink}`, {
             headers: this._headers
         }).then((res) => {
             if (res.ok) {
@@ -17,13 +17,13 @@ export class Api {
         })
     }
 
-    saveUser(popupNameInput, popupPostInput) {
+    saveUser({popupNameInput, popupPostInput}) {
         return fetch(`${this._baseUrl}/users/me`, {
             headers: this._headers,
             method: 'PATCH',
             body: JSON.stringify({
-                name: popupNameInput.value,
-                about: popupPostInput.value
+                name: popupNameInput,
+                about: popupPostInput
             })
         })
     }

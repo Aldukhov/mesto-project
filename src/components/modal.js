@@ -1,9 +1,4 @@
-import {
-  popupNameInput, popupPerson,
-  popupPostInput, profileName, profilePost,
-  popupImg, popupCaption,popupPicture, 
- profileAvatar,userId
-} from './index.js';
+
 import { resetValidity } from './validate.js';
 
 function closePopup(popup) {
