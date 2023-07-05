@@ -1,6 +1,4 @@
-import { Api } from "./API copy";
-
-export class UserInfo {
+export default class UserInfo {
     constructor(nameSelector,postSelector, avatarSelector) {
         this._nameSelector = nameSelector;
         this._postSelector = postSelector;
@@ -20,7 +18,7 @@ export class UserInfo {
     setUserInfo(user) {
         this.userId = user._id;
         this._name.textContent = user.name;
-        this._caption.textContent = user.about;
-        this._userAvatar.src = user.avatar;
+        this._post.textContent = user.about;
+        this._avatar.src = user.avatar;
     }
 }
