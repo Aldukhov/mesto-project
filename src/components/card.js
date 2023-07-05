@@ -2,95 +2,112 @@ import { openPicture } from "./modal.js";
 import { addLike, deleteLike, deleteCardAPI } from "./API.js";
 import { userId } from "./index.js";
 
-const cardsContainer = document.querySelector('.elements'); // создание контейнера
+export default class Card {
+  constructor (picture, selectorCard) {
+    this._link = picture.link;
+    this._name = picture.name;
+    this._id = picture._id;
+    this._selector = selectorCard;
+    this._likes = picture.likes;
+    this._ownerId = picture.owner._id;
+  }
+  _getElement () {
+    const cardTemplate = document
+    .querySelector(selectorCard)
+    .content
+    .querySelector('.elements__card')
+    .cloneNode(true);
 
-function createCard(picture) {
-  const cardTemplate = document.querySelector('#card-template').content; // создание template
-  const card = cardTemplate.querySelector('.elements__card').cloneNode(true); // клонирование элемента
-  card.querySelector('.elements__img').setAttribute('src', picture.link);
-  card.querySelector('.elements__img').setAttribute('alt', picture.name);
-  card.querySelector('.elements__img').setAttribute('id', picture._id)
-  card.querySelector('.elements__name').textContent = picture.name;
-
-
-  if (picture.likes.length > 0) {
-    likeQant(picture.likes, card);
-
-    if (picture.likes.some(element => element._id === userId.id)) {
-      card.querySelector('.elements__like').classList.add('elements__like_active');
-    }
+    return cardTemplate;
   }
 
-  if (picture.owner._id === '22c6d0525cf8eec9fa356c3d') {
-    card.querySelector('.elements__trash').classList.add('elements__trash_active');
+  createCard() {
+    this._card = this._getElement();
+    const imgCard = this._card.querySelector('.elements__img');
+    imgCard.src = this._link;
+    imgCard.alt = this._name;
+    imgCard.id = this._id;
+    this._card.querySelector('.elements__name').textContent = this._name;
+    this._checkAuthor(this._card);
+    this._checkLike(this._card);
+    this._deleteCard(this._card, this._id);
+    this._like(this._card);
+    this._setEventListeners(imgCard, this._card);
+    return this._card;
   }
 
-  deleteCard(card, picture._id);
-  like(card, picture);
-  card.querySelector('.elements__img').addEventListener('click', function (evt) {
-    openPicture(card);
-  });
-
-  return card;
-}
-
-
-function likeQant(likeQantity, card) {
-  if (likeQant.length === undefined) {
-    card.querySelector('.elements__like-qantity').textContent = 0;
-  } else {
-    card.querySelector('.elements__like-qantity').textContent = likeQantity.length;
+  // вынести id в константу
+  _checkAuthor(card) {
+    if (this._ownerId === '22c6d0525cf8eec9fa356c3d') {
+      card.querySelector('.elements__trash').classList.add('elements__trash_active');
+    };
   }
-  if (likeQantity.length > 0) {
-    card.querySelector('.elements__like-qantity').classList.add('elements__like-qantity_active');
-  } else if ((likeQantity.length <= 0) && card.querySelector('.elements__like-qantity').classList.contains('elements__like-qantity_active')) {
-    card.querySelector('.elements__like-qantity').classList.remove('elements__like-qantity_active');
+
+  _checkLike(card) {
+    if (this._likes.length > 0) {
+      this._likeQant(this._likes, card);
+      if (this._likes.some(element => element._id === userId.id)) {
+        card.querySelector('.elements__like').classList.add('elements__like_active');
+      }
+    };
   }
-}
 
-
-function like(card, picture) {  // лайк
-  card.querySelector('.elements__like').addEventListener('click', function (evt) {
-
-    const evtTarget = evt.target;
-    if (evtTarget.classList.contains('elements__like_active')) {
-      deleteLike(picture._id).then((data) => {
-        evtTarget.classList.remove('elements__like_active');
-        likeQant(data.likes, card);
+  _deleteCard(card, id) {
+    card.querySelector('.elements__trash').addEventListener('click', function (evt) {
+      const listItem = evt.target.closest('.elements__card');
+      deleteCardAPI(id).then((data) => {
+        listItem.remove();
       })
-
         .catch((err) => {
           console.log(err);
-        });
+        })
+    });
+  }
 
-    } else {
-      addLike(picture._id).then((data) => {
-        likeQant(data.likes, card);
-        evtTarget.classList.add('elements__like_active');
-      })
-
-        .catch((err) => {
-          console.log(err);
-        });
-
-    }
-
-  })
-}
-
-//Удаление карточки 
-function deleteCard(card, id) {
-
-  card.querySelector('.elements__trash').addEventListener('click', function (evt) {
-
-    const listItem = evt.target.closest('.elements__card');
-    deleteCardAPI(id).then((data) => {
-      listItem.remove();
+  _like(card) {
+    card.querySelector('.elements__like').addEventListener('click', function (evt) {
+      const evtTarget = evt.target;
+      if (evtTarget.classList.contains('elements__like_active')) {
+        deleteLike(this._id).then((data) => {
+          evtTarget.classList.remove('elements__like_active');
+          this._likeQant(data.likes, card);
+        })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        addLike(this._id).then((data) => {
+          this._likeQant(data.likes, card);
+          evtTarget.classList.add('elements__like_active');
+        })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     })
-      .catch((err) => {
-        console.log(err);
-      })
-  });
+  }
+
+  _setEventListeners (element, card) {
+    element.addEventListener('click', function (evt) {
+      openPicture(card);
+    });
+  }
+
+  _likeQant(likeQantity, card) {
+    if (likeQantity.length === undefined) {
+      card.querySelector('.elements__like-qantity').textContent = 0;
+    } else {
+      card.querySelector('.elements__like-qantity').textContent = likeQantity.length;
+    }
+    if (likeQantity.length > 0) {
+      card.querySelector('.elements__like-qantity').classList.add('elements__like-qantity_active');
+    } else if ((likeQantity.length <= 0) && card.querySelector('.elements__like-qantity').classList.contains('elements__like-qantity_active')) {
+      card.querySelector('.elements__like-qantity').classList.remove('elements__like-qantity_active');
+    }
+  }
+
 }
+
+const cardsContainer = document.querySelector('.elements'); // создание контейнера
 
 export { createCard, cardsContainer, likeQant };
