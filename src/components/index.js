@@ -1,5 +1,5 @@
 import "../pages/index.css";
-import { api, profileInfo,popupEditProfile, popupAvatar, popupAddCard, popupPicture, buttonAvatar, buttonAddCard, formAvatar, formNewCard, profileAvatar, profileName, profilePost } from "./utils";
+import { api, popupEditProfile, popupAvatar, popupAddCard, popupPicture, buttonAvatar, buttonAddCard, formAvatar, formNewCard, profileAvatar, profileName, profilePost } from "./utils";
 import PopupWithForm from "./PopupWithForm";
 import PopupWithImage from "./PopupWithImage";
 import FormValidator from "./FormValidator";
@@ -29,7 +29,7 @@ formValidatorAddCard.enableValidation();
 
 
 api.getData('users/me').then((data) => {
-  profileInfo.setUserInfo(data);
+  userInfo.setUserInfo(data);
 
 })
   .catch((err) => {
