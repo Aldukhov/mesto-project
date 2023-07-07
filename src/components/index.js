@@ -1,9 +1,5 @@
 import "../pages/index.css";
-import { api, popupEditProfile, popupAvatar, popupAddCard, popupPicture, buttonAvatar, buttonAddCard, formAvatar, formNewCard, profileAvatar, profileName, profilePost } from "./utils";
-import PopupWithForm from "./PopupWithForm";
-import PopupWithImage from "./PopupWithImage";
-import FormValidator from "./FormValidator";
-import UserInfo from "./UserInfo";
+import { api, profileInfo,popupEditProfile } from "./utils";
 
 const validObj = {
   formSelector: '.popup__form',
@@ -14,22 +10,15 @@ const validObj = {
   errorClass: 'popup__input-error_active'
 };
 
-// Класс профиля
-const userInfo = new UserInfo(profileName, profilePost, profileAvatar);
+
 
 // Открытие / Закрытие popup
 const buttonEdit = document.querySelector('.profile__edit');
 
 
-// Валидация
-const formValidatorAvatar = new FormValidator(validObj, formAvatar);
-formValidatorAvatar.enableValidation();
-const formValidatorAddCard = new FormValidator(validObj, formNewCard);
-formValidatorAddCard.enableValidation();
-
 
 api.getData('users/me').then((data) => {
-  userInfo.setUserInfo(data);
+  profileInfo.setUserInfo(data);
 
 })
   .catch((err) => {
@@ -39,37 +28,9 @@ api.getData('users/me').then((data) => {
   buttonEdit.addEventListener('click', function () { popupEditProfile.open(),api.saveUser});
   popupEditProfile.setEventListeners();
 
-  // класс попап редактирования аватара
-  const popupEditAvatar = new PopupWithForm(popupAvatar, 
-    {handleFormSubmit: (formData) => {
-    api.saveAvatar(data.avatar)
-    .then((data) => {userInfo.setUserInfo(data);})
-    .catch((err) => {console.log(err)});
-  }});
-  popupEditAvatar.setEventListeners();
-  buttonAvatar.addEventListener('click', () => {
-    popupEditAvatar.open();
-    formValidatorAvatar.resetValidity();
-  })
-  
-  // класс попап добавление новой карточки
-  const popupNewCardAdd = new PopupWithForm(popupAddCard, {
-    handleFormSubmit: (formData) => {
-      api.saveCard(data.link, data.name)
-      .then((data) => render) //рендер новой карточки добавить
-      .catch((err) => {console.log(err)});
-    }
-  });
-  popupNewCardAdd.setEventListeners();
-  buttonAddCard.addEventListener('click', () => {
-    popupNewCardAdd.open();
-    formValidatorAddCard.resetValidity();
-  })
 
-  // класс попап клик на карточку для увеличения изображения
-  const popupImage = new PopupWithImage(popupPicture);
-  popupImage.setEventListeners();
- 
+
+
 
 
 
