@@ -12,8 +12,6 @@ const profileAvatar = '.profile__avatar';
 const profileName = '.profile__name';
 const profilePost = '.profile__post';
 
-const profileInfo = new UserInfo (profileName,profilePost,profileAvatar); 
-
 const api = new Api ({baseUrl:'https://nomoreparties.co/v1/plus-cohort-25', headers:{
   authorization: 'fe25609f-c231-4126-8459-9808870edc8e',
   'Content-Type': 'application/json'
