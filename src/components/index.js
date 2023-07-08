@@ -1,9 +1,11 @@
 import "../pages/index.css";
-import { api, popupEditProfile, popupAvatar, popupAddCard, popupPicture, buttonAvatar, buttonAddCard, formAvatar, formNewCard, profileAvatar, profileName, profilePost } from "./utils";
+import { api, popupPerson, popupAvatar, cardListSelector, popupAddCard, templateSelector, buttonEdit, popupPicture, formProfile, buttonAvatar, buttonAddCard, formAvatar, formNewCard, profileAvatar, profileName, profilePost } from "./utils";
 import PopupWithForm from "./PopupWithForm";
 import PopupWithImage from "./PopupWithImage";
 import FormValidator from "./FormValidator";
 import UserInfo from "./UserInfo";
+import Section from './Section';
+import Card from "./Card";
 
 const validObj = {
   formSelector: '.popup__form',
@@ -17,15 +19,13 @@ const validObj = {
 // Класс профиля
 const userInfo = new UserInfo(profileName, profilePost, profileAvatar);
 
-// Открытие / Закрытие popup
-const buttonEdit = document.querySelector('.profile__edit');
-
-
 // Валидация
 const formValidatorAvatar = new FormValidator(validObj, formAvatar);
 formValidatorAvatar.enableValidation();
 const formValidatorAddCard = new FormValidator(validObj, formNewCard);
 formValidatorAddCard.enableValidation();
+const formValidatorProfile = new FormValidator(validObj, formProfile);
+formValidatorProfile.enableValidation();
 
 
 api.getData('users/me').then((data) => {
@@ -36,7 +36,15 @@ api.getData('users/me').then((data) => {
     console.log(err);
   });
 
-  buttonEdit.addEventListener('click', function () { popupEditProfile.open(),api.saveUser});
+  // попап редактирования профиля
+  const popupEditProfile = new PopupWithForm(popupPerson,{
+    handleFormSubmit: (formData) => {
+      api.saveUser(formData.name, formData.post)
+      .then((data) => {userInfo.setUserInfo(data)})
+      .catch((err) => {console.log(err)})
+    }
+  });
+  buttonEdit.addEventListener('click', function () { popupEditProfile.open(),formValidatorProfile.resetValidity();});
   popupEditProfile.setEventListeners();
 
   // класс попап редактирования аватара
@@ -70,6 +78,14 @@ api.getData('users/me').then((data) => {
   const popupImage = new PopupWithImage(popupPicture);
   popupImage.setEventListeners();
  
+
+  // создание новой карточки
+  const cardList = new Section({data,
+  renderer: (item) => {
+    const card = new Card(item, templateSelector);
+    const cardElement = card.createCard();
+    cardList.append(cardElement);
+  }})
 
 
 

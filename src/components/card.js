@@ -36,9 +36,8 @@ export default class Card {
     return this._card;
   }
 
-  // вынести id в константу
   _checkAuthor(card) {
-    if (this._ownerId === '22c6d0525cf8eec9fa356c3d') {
+    if (this._ownerId === userId) {
       card.querySelector('.elements__trash').classList.add('elements__trash_active');
     };
   }
