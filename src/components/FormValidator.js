@@ -26,20 +26,35 @@ export default class FormValidator {
     enableValidation() {
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
-            this._setEventListeners();
+            
         })
+      
+        this._setEventListeners();
     }
+    _checkInputValidity(input) {
+        if (input.validity.patternMismatch) {
+          input.setCustomValidity(input.dataset.errorMessage);
+        } else {
+          input.setCustomValidity('');
+        }
+      
+        if (!input.validity.valid) {
+          this._showInputError(input, input.validationMessage);
+        } else {
+          this._hideInputError(input);
+        }
+      };
 
     _setEventListeners() {
 
-        if (inputList.length === 0) {
+        if (this._inputList.length === 0) {
             return
         }
 
         this._toggleButtonState();
 
         this._inputList.forEach((input) => {
-            input.addEventListener('input', function () {
+            input.addEventListener('input',  () => {
               this._checkInputValidity(input);
               this._toggleButtonState();
             })
@@ -57,19 +72,7 @@ export default class FormValidator {
         }
     }
 
-    _checkInputValidity(input) {
-        if (input.validity.patternMismatch) {
-          input.setCustomValidity(input.dataset.errorMessage);
-        } else {
-          input.setCustomValidity('');
-        }
-      
-        if (!input.validity.valid) {
-          this._showInputError(input, input.validationMessage);
-        } else {
-          this._hideInputError(input);
-        }
-      };
+    
 
      _showInputError (input, errorMessage) {
         this._errorElement = this._form.querySelector(`.${input.id}-error`);

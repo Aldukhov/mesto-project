@@ -40,8 +40,12 @@ api.getData('users/me').then((data) => {
   const popupEditProfile = new PopupWithForm(popupPerson,{
     handleFormSubmit: (formData) => {
       api.saveUser(formData.name, formData.post)
-      .then((data) => {userInfo.setUserInfo(data)})
+      .then((data) => {userInfo.setUserInfo(data); popupEditProfile.close()})      
       .catch((err) => {console.log(err)})
+      .finally(() => {
+        popupEditProfile._renderLoading(false); // если renderLoading не обязательно должна быть private, то давай ее из private уберем,
+        // если обязательно, то надо думать как переделать код, что бы then, catch, finally работали внутри class'a 
+            });
     }
   });
   popupEditProfile.setEventListeners();

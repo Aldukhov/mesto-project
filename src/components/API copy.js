@@ -17,7 +17,7 @@ export default class Api {
         })
     }
 
-    saveUser({popupNameInput, popupPostInput}) {
+    saveUser(popupNameInput, popupPostInput) {
         return fetch(`${this._baseUrl}/users/me`, {
             headers: this._headers,
             method: 'PATCH',
@@ -25,6 +25,12 @@ export default class Api {
                 name: popupNameInput,
                 about: popupPostInput
             })
+        }).then((res) => {
+            if (res.ok) {
+                return res.json();
+            }
+
+            return Promise.reject(`Oops: ${res.status}`);
         })
     }
 

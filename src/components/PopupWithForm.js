@@ -22,19 +22,14 @@ export default class PopupWithForm extends Popup {
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
             this._renderLoading(true);
-            this._handleFormSubmit(this._getInputValues())
-            .then(() => this.close())
-            .finally(() => {
-            this._renderLoading(false);
-            });
+            this._handleFormSubmit(this._getInputValues());
+            
         })
     }
 
     resetData() {
 
-
         Array.from(this._inputArr).forEach((input) => {
-            console.log(input.name);
                         if(input.name === "name") {
                 input.value = userInfo.getUserInfo().name;
             }
