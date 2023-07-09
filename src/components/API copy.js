@@ -25,12 +25,6 @@ export default class Api {
                 name: popupNameInput,
                 about: popupPostInput
             })
-        }).then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Oops: ${res.status}`);
         })
     }
 

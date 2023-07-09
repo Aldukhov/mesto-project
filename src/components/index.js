@@ -54,10 +54,14 @@ api.getData('users/me').then((data) => {
 
   // класс попап редактирования аватара
   const popupEditAvatar = new PopupWithForm(popupAvatar, 
-    {handleFormSubmit: (formData) => {
-    api.saveAvatar(data.avatar)
-    .then((data) => {userInfo.setUserInfo(data);})
-    .catch((err) => {console.log(err)});
+    {handleFormSubmit: (formData,avatarSelector) => {
+    api.saveAvatar(formData.link,avatarSelector)
+    .then((data) => {popupEditAvatar.close()})      
+    .catch((err) => {console.log(err)})
+    .finally(() => {
+      popupEditAvatar._renderLoading(false); // если renderLoading не обязательно должна быть private, то давай ее из private уберем,
+      // если обязательно, то надо думать как переделать код, что бы then, catch, finally работали внутри class'a 
+          });
   }});
   popupEditAvatar.setEventListeners();
   buttonAvatar.addEventListener('click', () => {
