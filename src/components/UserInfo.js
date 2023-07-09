@@ -12,7 +12,8 @@ export default class UserInfo {
     getUserInfo() {
         return {name: this._name.textContent,
                 post: this._post.textContent,
-                avatar: this._avatar}
+                avatar: this._avatar,
+                id: this.userId}
 
     }
 

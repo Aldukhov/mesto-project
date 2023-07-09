@@ -1,10 +1,5 @@
 import  Api  from "./API copy";
 
-let userId = {};
-
-const profileId = '22c6d0525cf8eec9fa356c3d';
-
-
 //Главный узел для profile
 const profileAvatar = '.profile__avatar';  
 const profileName = '.profile__name';

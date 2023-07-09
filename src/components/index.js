@@ -1,5 +1,7 @@
 import "../pages/index.css";
-import { api, popupPerson, popupAvatar, cardListSelector, popupAddCard, templateSelector, buttonEdit, popupPicture, formProfile, buttonAvatar, buttonAddCard, formAvatar, formNewCard, profileAvatar, profileName, profilePost } from "./utils";
+import { api, popupPerson, popupAvatar, cardListSelector, popupAddCard, templateSelector, 
+  buttonEdit, popupPicture, formProfile, buttonAvatar, buttonAddCard, 
+  formAvatar, formNewCard, profileAvatar, profileName, profilePost } from "./utils";
 import PopupWithForm from "./PopupWithForm";
 import PopupWithImage from "./PopupWithImage";
 import FormValidator from "./FormValidator";
@@ -28,8 +30,25 @@ const formValidatorProfile = new FormValidator(validObj, formProfile);
 formValidatorProfile.enableValidation();
 
 
+
+
 api.getData('users/me').then((data) => {
   userInfo.setUserInfo(data);
+
+  api.getData('cards').then((data) => {  // загрузка карточек на страницу, не доделано 
+    
+    const cardList = new Section({data,
+      renderer: (item) => {
+        const card = new Card(item, templateSelector);
+        const cardElement = card.createCard();
+        cardList.append(cardElement);
+      }},cardListSelector)
+
+      cardList.renderItems(userInfo.getUserInfo().id)
+    
+  }).catch((err) => {
+    console.log(err);
+  });
 
 })
   .catch((err) => {
@@ -90,13 +109,7 @@ api.getData('users/me').then((data) => {
   popupImage.setEventListeners();
  
 
-  // создание новой карточки
-  const cardList = new Section({data,
-  renderer: (item) => {
-    const card = new Card(item, templateSelector);
-    const cardElement = card.createCard();
-    cardList.append(cardElement);
-  }})
+ 
 
   export {userInfo}
 
