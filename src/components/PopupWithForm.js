@@ -1,11 +1,12 @@
 import Popup from "./Popup";
+import { userInfo } from "./index.js";
 
 export default class PopupWithForm extends Popup {
     constructor (popupSelector, {handleFormSubmit}) {
         super(popupSelector);
         this._handleFormSubmit = handleFormSubmit;
         this._form = this._popup.querySelector('.popup__form');
-        this._inputArr = this._popup.querySelector('.popup__input');
+        this._inputArr = this._popup.querySelectorAll('.popup__input');
         this._button = this._popup.querySelector('.popup__button');
     }
     _getInputValues() {
@@ -27,6 +28,20 @@ export default class PopupWithForm extends Popup {
             this._renderLoading(false);
             });
         })
+    }
+
+    resetData() {
+
+
+        Array.from(this._inputArr).forEach((input) => {
+            console.log(input.name);
+                        if(input.name === "name") {
+                input.value = userInfo.getUserInfo().name;
+            }
+             else if (input.name === "post") {
+                input.value = userInfo.getUserInfo().post;
+            }
+        });
     }
 
     _renderLoading(isLoading) {

@@ -1,6 +1,6 @@
-import { openPicture } from "./modal.js";
-import { addLike, deleteLike, deleteCardAPI } from "./API.js";
-import { userId } from "./index.js";
+
+import { api } from "./utils.js";
+import { userInfo } from "./index.js";
 
 export default class Card {
   constructor (picture, selectorCard) {
@@ -37,7 +37,7 @@ export default class Card {
   }
 
   _checkAuthor(card) {
-    if (this._ownerId === userId) {
+    if (this._ownerId === userInfo.id) {
       card.querySelector('.elements__trash').classList.add('elements__trash_active');
     };
   }
@@ -45,7 +45,7 @@ export default class Card {
   _checkLike(card) {
     if (this._likes.length > 0) {
       this._likeQant(this._likes, card);
-      if (this._likes.some(element => element._id === userId.id)) {
+      if (this._likes.some(element => element._id === userInfo.id)) {
         card.querySelector('.elements__like').classList.add('elements__like_active');
       }
     };
@@ -54,7 +54,7 @@ export default class Card {
   _deleteCard(card, id) {
     card.querySelector('.elements__trash').addEventListener('click', function (evt) {
       const listItem = evt.target.closest('.elements__card');
-      deleteCardAPI(id).then((data) => {
+      api.deleteCard(id).then((data) => {
         listItem.remove();
       })
         .catch((err) => {
@@ -67,7 +67,7 @@ export default class Card {
     card.querySelector('.elements__like').addEventListener('click', function (evt) {
       const evtTarget = evt.target;
       if (evtTarget.classList.contains('elements__like_active')) {
-        deleteLike(this._id).then((data) => {
+        api.deleteLike(this._id).then((data) => {
           evtTarget.classList.remove('elements__like_active');
           this._likeQant(data.likes, card);
         })
@@ -75,7 +75,7 @@ export default class Card {
             console.log(err);
           });
       } else {
-        addLike(this._id).then((data) => {
+        api.addLike(this._id).then((data) => {
           this._likeQant(data.likes, card);
           evtTarget.classList.add('elements__like_active');
         })
@@ -86,13 +86,8 @@ export default class Card {
     })
   }
 
-  _setEventListeners (element, card) {
-    element.addEventListener('click', function (evt) {
-      openPicture(card);
-    });
-  }
 
-  _likeQant(likeQantity, card) {
+_likeQant(likeQantity, card) {
     if (likeQantity.length === undefined) {
       card.querySelector('.elements__like-qantity').textContent = 0;
     } else {

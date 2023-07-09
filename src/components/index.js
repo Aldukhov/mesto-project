@@ -5,7 +5,7 @@ import PopupWithImage from "./PopupWithImage";
 import FormValidator from "./FormValidator";
 import UserInfo from "./UserInfo";
 import Section from './Section';
-import Card from "./Card";
+import Card from "./card";
 
 const validObj = {
   formSelector: '.popup__form',
@@ -44,8 +44,9 @@ api.getData('users/me').then((data) => {
       .catch((err) => {console.log(err)})
     }
   });
-  buttonEdit.addEventListener('click', function () { popupEditProfile.open(),formValidatorProfile.resetValidity();});
   popupEditProfile.setEventListeners();
+  buttonEdit.addEventListener('click', function () {popupEditProfile.resetData(),formValidatorProfile.resetValidity(),  popupEditProfile.open();});
+  
 
   // класс попап редактирования аватара
   const popupEditAvatar = new PopupWithForm(popupAvatar, 
@@ -59,6 +60,8 @@ api.getData('users/me').then((data) => {
     popupEditAvatar.open();
     formValidatorAvatar.resetValidity();
   })
+
+
   
   // класс попап добавление новой карточки
   const popupNewCardAdd = new PopupWithForm(popupAddCard, {
@@ -87,6 +90,7 @@ api.getData('users/me').then((data) => {
     cardList.append(cardElement);
   }})
 
+  export {userInfo}
 
 
 
