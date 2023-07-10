@@ -23,7 +23,7 @@ export default class Section {
         this._container.append(element);
     }
 
-    renderItem(item, userId) {
-        this._prependItem(this._renderer(item, userId));
+    renderItem(item) {
+        this._prependItem(this._renderer(item) );
     }
 }

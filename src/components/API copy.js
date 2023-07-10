@@ -33,8 +33,8 @@ export default class Api {
             headers: this._headers,
             method: 'POST',
             body: JSON.stringify({
-                name: popupTitleInput.value,
-                link: popupLinkInput.value
+                name: popupTitleInput,
+                link: popupLinkInput
             })
         }).then((res) => {
             if (res.ok) {

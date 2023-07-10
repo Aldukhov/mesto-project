@@ -1,7 +1,9 @@
 import "../pages/index.css";
-import { api, popupPerson, popupAvatar, cardListSelector, popupAddCard, templateSelector, 
-  buttonEdit, popupPicture, formProfile, buttonAvatar, buttonAddCard, 
-  formAvatar, formNewCard, profileAvatar, profileName, profilePost } from "./utils";
+import {
+  api, popupPerson, popupAvatar, cardListSelector, popupAddCard, templateSelector,
+  buttonEdit, popupPicture, formProfile, buttonAvatar, buttonAddCard,
+  formAvatar, formNewCard, profileAvatar, profileName, profilePost
+} from "./utils";
 import PopupWithForm from "./PopupWithForm";
 import PopupWithImage from "./PopupWithImage";
 import FormValidator from "./FormValidator";
@@ -30,94 +32,107 @@ const formValidatorProfile = new FormValidator(validObj, formProfile);
 formValidatorProfile.enableValidation();
 
 
+let cardList;
+
 
 
 api.getData('users/me').then((data) => {
   userInfo.setUserInfo(data);
-
-  api.getData('cards').then((data) => {  // загрузка карточек на страницу, не доделано 
-
-    const cardList = new Section({data,
-      renderer: (item) => {
-        const card = new Card(item, templateSelector);
-        const cardElement = card.createCard();
-        cardList.addItem(cardElement);
-      }},cardListSelector)
-
-      cardList.renderItems()
-    
-  }).catch((err) => {
-    console.log(err);
-  });
-
 })
   .catch((err) => {
     console.log(err);
   });
 
-  // попап редактирования профиля
-  const popupEditProfile = new PopupWithForm(popupPerson,{
-    handleFormSubmit: (formData) => {
-      api.saveUser(formData.name, formData.post)
-      .then((data) => {userInfo.setUserInfo(data); popupEditProfile.close()})      
-      .catch((err) => {console.log(err)})
+api.getData('cards').then((data) => {  // загрузка карточек на страницу, не доделано 
+
+  cardList = new Section({
+    data,
+    renderer: (item) => {
+      const card = new Card(item, templateSelector);
+      const cardElement = card.createCard();
+      cardList.addItem(cardElement);
+    }
+  }, cardListSelector)
+
+  cardList.renderItems()
+
+
+
+}).catch((err) => {
+  console.log(err);
+});
+
+// попап редактирования профиля
+const popupEditProfile = new PopupWithForm(popupPerson, {
+  handleFormSubmit: (formData) => {
+    api.saveUser(formData.name, formData.post)
+      .then((data) => { userInfo.setUserInfo(data); popupEditProfile.close() })
+      .catch((err) => { console.log(err) })
       .finally(() => {
         popupEditProfile._renderLoading(false); // если renderLoading не обязательно должна быть private, то давай ее из private уберем,
         // если обязательно, то надо думать как переделать код, что бы then, catch, finally работали внутри class'a 
-            });
-    }
-  });
-  popupEditProfile.setEventListeners();
-  buttonEdit.addEventListener('click', function () {popupEditProfile.resetData(),formValidatorProfile.resetValidity(),  popupEditProfile.open();});
-  
-
-  // класс попап редактирования аватара
-  const popupEditAvatar = new PopupWithForm(popupAvatar, 
-    {handleFormSubmit: (formData,avatarSelector) => {
-    api.saveAvatar(formData.link,avatarSelector)
-    .then((data) => {popupEditAvatar.close()})      
-    .catch((err) => {console.log(err)})
-    .finally(() => {
-      popupEditAvatar._renderLoading(false); // если renderLoading не обязательно должна быть private, то давай ее из private уберем,
-      // если обязательно, то надо думать как переделать код, что бы then, catch, finally работали внутри class'a 
-          });
-  }});
-  popupEditAvatar.setEventListeners();
-  buttonAvatar.addEventListener('click', () => {
-    popupEditAvatar.open();
-    formValidatorAvatar.resetValidity();
-  })
+      });
+  }
+});
+popupEditProfile.setEventListeners();
+buttonEdit.addEventListener('click', function () { popupEditProfile.resetData(), formValidatorProfile.resetValidity(), popupEditProfile.open(); });
 
 
-  
-  // класс попап добавление новой карточки
-  const popupNewCardAdd = new PopupWithForm(popupAddCard, {
+// класс попап редактирования аватара
+const popupEditAvatar = new PopupWithForm(popupAvatar,
+  {
     handleFormSubmit: (formData) => {
-      api.saveCard(data.link, data.name)
-      .then((data) => render) //рендер новой карточки добавить
-      .catch((err) => {console.log(err)});
+      api.saveAvatar(formData.link, userInfo.getUserInfo().avatar)
+        .then((data) => { popupEditAvatar.close() })
+        .catch((err) => { console.log(err) })
+        .finally(() => {
+          popupEditAvatar._renderLoading(false); // если renderLoading не обязательно должна быть private, то давай ее из private уберем,
+          // если обязательно, то надо думать как переделать код, что бы then, catch, finally работали внутри class'a 
+        });
     }
   });
-  popupNewCardAdd.setEventListeners();
-  buttonAddCard.addEventListener('click', () => {
-    popupNewCardAdd.open();
-    formValidatorAddCard.resetValidity();
-  })
-
-  // класс попап клик на карточку для увеличения изображения
-  const popupImage = new PopupWithImage(popupPicture);
-  popupImage.setEventListeners();
- 
-
- 
-
-  export {userInfo}
+popupEditAvatar.setEventListeners();
+buttonAvatar.addEventListener('click', () => {
+  popupEditAvatar.open();
+  formValidatorAvatar.resetValidity();
+})
 
 
 
+// класс попап добавление новой карточки
+const popupNewCardAdd = new PopupWithForm(popupAddCard, {
+  handleFormSubmit: (formData) => {
+    api.saveCard(formData.link, formData.title)
+      .then((data) => {
+        cardList.renderItem(data); 
+        popupNewCardAdd.close();
+      }) //рендер новой карточки добавить
+      .catch((err) => { console.log(err) })
+      .finally(() => {
+        popupNewCardAdd._renderLoading(false); // если renderLoading не обязательно должна быть private, то давай ее из private уберем,
+        // если обязательно, то надо думать как переделать код, что бы then, catch, finally работали внутри class'a 
+      });
+}
+  });
+popupNewCardAdd.setEventListeners();
+buttonAddCard.addEventListener('click', () => {
+  popupNewCardAdd.open();
+  formValidatorAddCard.resetValidity();
+})
+
+// класс попап клик на карточку для увеличения изображения
+const popupImage = new PopupWithImage(popupPicture);
+popupImage.setEventListeners();
 
 
-  
+
+export { userInfo }
+
+
+
+
+
+
 
 
 
