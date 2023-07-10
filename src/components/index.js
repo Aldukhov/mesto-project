@@ -43,21 +43,18 @@ api.getData('users/me').then((data) => {
     console.log(err);
   });
 
-api.getData('cards').then((data) => {  // загрузка карточек на страницу, не доделано 
+// добавление новой карточки
+cardList = new Section({
+  renderer: (item) => {
+    const card = new Card(item, templateSelector);
+    const cardElement = card.createCard();
+    cardList.addItem(cardElement);
+  }
+}, cardListSelector);
 
-  cardList = new Section({
-    data,
-    renderer: (item) => {
-      const card = new Card(item, templateSelector);
-      const cardElement = card.createCard();
-      cardList.addItem(cardElement);
-    }
-  }, cardListSelector)
-
-  cardList.renderItems()
-
-
-
+// отрисовка массива карточек
+api.getData('cards').then((data) => {
+  cardList.renderItems(data);
 }).catch((err) => {
   console.log(err);
 });
@@ -69,8 +66,7 @@ const popupEditProfile = new PopupWithForm(popupPerson, {
       .then((data) => { userInfo.setUserInfo(data); popupEditProfile.close() })
       .catch((err) => { console.log(err) })
       .finally(() => {
-        popupEditProfile._renderLoading(false); // если renderLoading не обязательно должна быть private, то давай ее из private уберем,
-        // если обязательно, то надо думать как переделать код, что бы then, catch, finally работали внутри class'a 
+        popupEditProfile.renderLoading(false);
       });
   }
 });
@@ -86,8 +82,7 @@ const popupEditAvatar = new PopupWithForm(popupAvatar,
         .then((data) => { popupEditAvatar.close() })
         .catch((err) => { console.log(err) })
         .finally(() => {
-          popupEditAvatar._renderLoading(false); // если renderLoading не обязательно должна быть private, то давай ее из private уберем,
-          // если обязательно, то надо думать как переделать код, что бы then, catch, finally работали внутри class'a 
+          popupEditAvatar._renderLoading(false);
         });
     }
   });
@@ -106,11 +101,10 @@ const popupNewCardAdd = new PopupWithForm(popupAddCard, {
       .then((data) => {
         cardList.renderItem(data); 
         popupNewCardAdd.close();
-      }) //рендер новой карточки добавить
+      })
       .catch((err) => { console.log(err) })
       .finally(() => {
-        popupNewCardAdd._renderLoading(false); // если renderLoading не обязательно должна быть private, то давай ее из private уберем,
-        // если обязательно, то надо думать как переделать код, что бы then, catch, finally работали внутри class'a 
+        popupNewCardAdd._renderLoading(false);
       });
 }
   });
