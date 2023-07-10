@@ -36,15 +36,15 @@ api.getData('users/me').then((data) => {
   userInfo.setUserInfo(data);
 
   api.getData('cards').then((data) => {  // загрузка карточек на страницу, не доделано 
-    
+
     const cardList = new Section({data,
       renderer: (item) => {
         const card = new Card(item, templateSelector);
         const cardElement = card.createCard();
-        cardList.append(cardElement);
+        cardList.addItem(cardElement);
       }},cardListSelector)
 
-      cardList.renderItems(userInfo.getUserInfo().id)
+      cardList.renderItems()
     
   }).catch((err) => {
     console.log(err);

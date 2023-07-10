@@ -12,27 +12,24 @@ export default class Card {
     this._ownerId = picture.owner._id;
   }
   _getElement () {
-    const cardTemplate = document
-    .querySelector(selectorCard)
-    .content
-    .querySelector('.elements__card')
-    .cloneNode(true);
+    this._cardTemplate = document.querySelector(this._selector)
+    .content.querySelector('.elements__card').cloneNode(true);
 
-    return cardTemplate;
+    return this._cardTemplate;
   }
 
   createCard() {
     this._card = this._getElement();
-    const imgCard = this._card.querySelector('.elements__img');
-    imgCard.src = this._link;
-    imgCard.alt = this._name;
-    imgCard.id = this._id;
+    this._imgCard = this._card.querySelector('.elements__img');
+    this._imgCard.src = this._link;
+    this._imgCard.alt = this._name;
+    this._imgCard.id = this._id;
     this._card.querySelector('.elements__name').textContent = this._name;
     this._checkAuthor(this._card);
     this._checkLike(this._card);
     this._deleteCard(this._card, this._id);
     this._like(this._card);
-    this._setEventListeners(imgCard, this._card);
+   // this._setEventListeners(this._imgCard, this._card);
     return this._card;
   }
 
@@ -53,9 +50,9 @@ export default class Card {
 
   _deleteCard(card, id) {
     card.querySelector('.elements__trash').addEventListener('click', function (evt) {
-      const listItem = evt.target.closest('.elements__card');
+      this._listItem = evt.target.closest('.elements__card');
       api.deleteCard(id).then((data) => {
-        listItem.remove();
+        this._listItem.remove();
       })
         .catch((err) => {
           console.log(err);
@@ -65,10 +62,10 @@ export default class Card {
 
   _like(card) {
     card.querySelector('.elements__like').addEventListener('click', function (evt) {
-      const evtTarget = evt.target;
-      if (evtTarget.classList.contains('elements__like_active')) {
+      this._evtTarget = evt.target;
+      if (this._evtTarget.classList.contains('elements__like_active')) {
         api.deleteLike(this._id).then((data) => {
-          evtTarget.classList.remove('elements__like_active');
+          this._evtTarget.classList.remove('elements__like_active');
           this._likeQant(data.likes, card);
         })
           .catch((err) => {
@@ -77,7 +74,7 @@ export default class Card {
       } else {
         api.addLike(this._id).then((data) => {
           this._likeQant(data.likes, card);
-          evtTarget.classList.add('elements__like_active');
+          this._evtTarget.classList.add('elements__like_active');
         })
           .catch((err) => {
             console.log(err);
