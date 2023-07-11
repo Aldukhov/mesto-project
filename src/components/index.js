@@ -44,7 +44,7 @@ const cardList = new Section({
   renderer: (item) => {
     const card = new Card(item, templateSelector);
     const cardElement = card.createCard();
-    cardList.addItem(cardElement, append);
+    cardList.addItem(cardElement, "append");
   }
 }, cardListSelector);
 
