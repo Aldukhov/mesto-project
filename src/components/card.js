@@ -29,7 +29,7 @@ export default class Card {
     this._checkAuthor(this._card);
     this._checkLike(this._card);
     this._deleteCard(this._card, this._id);
-    this._like(this._card);
+    this._like(this._card, this._id);
     this._setEventListeners(this._imgCard);
     return this._card;
   }
@@ -65,31 +65,7 @@ export default class Card {
     });
   }
 
-  _like(card) {
-    card.querySelector('.elements__like').addEventListener('click', function (evt) {
-      this._evtTarget = evt.target;
-      if (this._evtTarget.classList.contains('elements__like_active')) {
-        api.deleteLike(this._id).then((data) => {
-          this._evtTarget.classList.remove('elements__like_active');
-          this._likeQant(data.likes, card);
-        })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        api.addLike(this._id).then((data) => {
-          this._likeQant(data.likes, card);
-          this._evtTarget.classList.add('elements__like_active');
-        })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    })
-  }
-
-
-_likeQant(likeQantity, card) {
+  _likeQant(likeQantity, card) {
     if (likeQantity.length === undefined) {
       card.querySelector('.elements__like-qantity').textContent = 0;
     } else {
@@ -100,6 +76,29 @@ _likeQant(likeQantity, card) {
     } else if ((likeQantity.length <= 0) && card.querySelector('.elements__like-qantity').classList.contains('elements__like-qantity_active')) {
       card.querySelector('.elements__like-qantity').classList.remove('elements__like-qantity_active');
     }
+  }
+  
+  _like(card, id) {
+    card.querySelector('.elements__like').addEventListener('click', function (evt) {
+      this._evtTarget = evt.target;
+      if (this._evtTarget.classList.contains('elements__like_active')) {
+        api.deleteLike(id).then((data) => {
+          this._evtTarget.classList.remove('elements__like_active');
+          this._likeQant(data.likes, card);
+        })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        api.addLike(id).then((data) => {
+          this._likeQant(data.likes, card);
+          this._evtTarget.classList.add('elements__like_active');
+        })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    })
   }
 
 }
