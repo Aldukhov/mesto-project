@@ -30,7 +30,7 @@ export default class Card {
     this._checkLike(this._card);
     this._deleteCard(this._card, this._id);
     this._like(this._card);
-    this._setEventListeners(this._card);
+    this._setEventListeners(this._imgCard);
     return this._card;
   }
 
