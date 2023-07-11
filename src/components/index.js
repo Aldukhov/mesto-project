@@ -32,10 +32,6 @@ const formValidatorProfile = new FormValidator(validObj, formProfile);
 formValidatorProfile.enableValidation();
 
 
-let cardList;
-
-
-
 api.getData('users/me').then((data) => {
   userInfo.setUserInfo(data);
 })
@@ -44,11 +40,11 @@ api.getData('users/me').then((data) => {
   });
 
 // добавление новой карточки
-cardList = new Section({
+const cardList = new Section({
   renderer: (item) => {
     const card = new Card(item, templateSelector);
     const cardElement = card.createCard();
-    cardList.addItem(cardElement);
+    cardList.addItem(cardElement, append);
   }
 }, cardListSelector);
 

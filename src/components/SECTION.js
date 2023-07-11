@@ -4,21 +4,16 @@ export default class Section {
         this._container = document.querySelector(containerSelector);
     }
 
-    addItem(element) {
-        this._container.prepend(element);
+    addItem(element, place) {
+        if (place === 'append') {
+            this._container.append(element);
+        } else {
+        this._container.prepend(element);}
     }
 
     renderItems(data) {
         data.forEach(item => {
           this._renderer(item);
         });
-    }
-
-    _prependItem(element) {
-        this._container.prepend(element);
-    }
-
-    renderItem(item) {
-        this._prependItem(this._renderer(item) );
     }
 }
