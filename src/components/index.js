@@ -95,7 +95,7 @@ const popupNewCardAdd = new PopupWithForm(popupAddCard, {
   handleFormSubmit: (formData) => {
     api.saveCard(formData.link, formData.title)
       .then((data) => {
-        cardList.renderItem(data); 
+        cardList.renderItems(data); 
         popupNewCardAdd.close();
       })
       .catch((err) => { console.log(err) })
