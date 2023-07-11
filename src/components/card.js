@@ -3,13 +3,14 @@ import { api } from "./utils.js";
 import { userInfo } from "./index.js";
 
 export default class Card {
-  constructor (picture, selectorCard) {
+  constructor (picture, selectorCard, {handleCardClick}) {
     this._link = picture.link;
     this._name = picture.name;
     this._id = picture._id;
     this._selector = selectorCard;
     this._likes = picture.likes;
     this._ownerId = picture.owner._id;
+    this._handleCardClick = handleCardClick;
   }
   _getElement () {
     this._cardTemplate = document.querySelector(this._selector)
@@ -29,7 +30,6 @@ export default class Card {
     this._checkLike(this._card);
     this._deleteCard(this._card, this._id);
     this._like(this._card);
-   // this._setEventListeners(this._imgCard, this._card);
     return this._card;
   }
 
@@ -46,6 +46,10 @@ export default class Card {
         card.querySelector('.elements__like').classList.add('elements__like_active');
       }
     };
+  }
+
+  setEventListeners(card) {
+    card.addEventListener('click',() => {this._handleCardClick(this._name, this._link)});
   }
 
   _deleteCard(card, id) {

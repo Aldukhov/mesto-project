@@ -42,7 +42,11 @@ api.getData('users/me').then((data) => {
 // добавление новой карточки
 const cardList = new Section({
   renderer: (item) => {
-    const card = new Card(item, templateSelector);
+    const card = new Card(item, templateSelector, {
+      handleCardClick: (name, link) => {
+        popupImage.open(name, link);
+      }
+    });
     const cardElement = card.createCard();
     cardList.addItem(cardElement, "append");
   }
