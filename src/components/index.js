@@ -78,7 +78,7 @@ const popupEditAvatar = new PopupWithForm(popupAvatar,
         .then((data) => { popupEditAvatar.close() })
         .catch((err) => { console.log(err) })
         .finally(() => {
-          popupEditAvatar._renderLoading(false);
+          popupEditAvatar.renderLoading(false);
         });
     }
   });
@@ -100,7 +100,7 @@ const popupNewCardAdd = new PopupWithForm(popupAddCard, {
       })
       .catch((err) => { console.log(err) })
       .finally(() => {
-        popupNewCardAdd._renderLoading(false);
+        popupNewCardAdd.renderLoading(false);
       });
 }
   });
