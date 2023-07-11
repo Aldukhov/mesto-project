@@ -30,6 +30,7 @@ export default class Card {
     this._checkLike(this._card);
     this._deleteCard(this._card, this._id);
     this._like(this._card);
+    this._setEventListeners(this._card);
     return this._card;
   }
 
@@ -48,7 +49,7 @@ export default class Card {
     };
   }
 
-  setEventListeners(card) {
+  _setEventListeners(card) {
     card.addEventListener('click',() => {this._handleCardClick(this._name, this._link)});
   }
 
