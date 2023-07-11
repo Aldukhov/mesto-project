@@ -91,8 +91,8 @@ export default class Card {
           });
       } else {
         api.addLike(id).then((data) => {
-          this._likeQant(data.likes, card);
           this._evtTarget.classList.add('elements__like_active');
+          this._likeQant(data.likes, card);
         })
           .catch((err) => {
             console.log(err);
