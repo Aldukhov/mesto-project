@@ -35,7 +35,7 @@ export default class Card {
   }
 
   _checkAuthor(card) {
-    if (this._ownerId === userInfo.id) {
+    if (this._ownerId === userInfo.getUserInfo().id) {
       card.querySelector('.elements__trash').classList.add('elements__trash_active');
     };
   }
@@ -43,9 +43,11 @@ export default class Card {
   _checkLike(card) {
     if (this._likes.length > 0) {
       this._likeQant(this._likes, card);
-      if (this._likes.some(element => element._id === userInfo.id)) {
+      
+      if (this._likes.some(element => element._id === userInfo.getUserInfo().id)) {
         card.querySelector('.elements__like').classList.add('elements__like_active');
       }
+
     };
   }
 
