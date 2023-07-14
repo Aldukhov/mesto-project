@@ -28,8 +28,8 @@ export default class Card {
     this._imgCard.id = this._id;
     this._card.querySelector('.elements__name').textContent = this._name;
     this._checkAuthor(this._card);
-    this._checkLike(this._card);
-    this._setEventListeners(this._imgCard, this._card);
+    this._checkLike(this._card, this._likeQant);
+    this._setEventListeners(this._imgCard, this._card, this._handleCardLike, this._id, this._likeQant);
     return this._card;
   }
 
@@ -39,9 +39,9 @@ export default class Card {
     };
   }
 
-  _checkLike(card) {
+  _checkLike(card, likeQant) {
     if (this._likes.length > 0) {
-      this._likeQant(this._likes, card);
+      likeQant(this._likes, card);
       
       if (this._likes.some(element => element._id === this._userId)) {
         card.querySelector('.elements__like').classList.add('elements__like_active');
@@ -50,9 +50,9 @@ export default class Card {
     };
   }
 
-  _setEventListeners(imgCard, card) {
+  _setEventListeners(imgCard, card, likeCard, id, likeQuant) {
     imgCard.addEventListener('click',() => {this._handleCardClick(this._name, this._link)});
-    card.querySelector('.elements__like').addEventListener('click', () => {this._handleCardLike(evt, this._card, this._id, this._likeQant)});
+    card.querySelector('.elements__like').addEventListener('click', function(evt) {likeCard(evt, card, id, likeQuant)});
     card.querySelector('.elements__trash').addEventListener('click', function (evt) {this._handleCardDelete(this._card, this._id)});
   }
 

@@ -95,7 +95,7 @@ buttonEdit.addEventListener('click', function () { popupEditProfile.resetData(),
 function likeCard (evt, card, id, likeQant) {
     if (evt.target.classList.contains('elements__like_active')) {
       api.deleteLike(id).then((data) => {
-        this._evtTarget.classList.remove('elements__like_active');
+        evt.target.classList.remove('elements__like_active');
         likeQant(data.likes, card);
       })
         .catch((err) => {
