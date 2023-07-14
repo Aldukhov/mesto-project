@@ -41,14 +41,14 @@ api.getData('users/me').then((data) => {
 
 // добавление новой карточки
 const cardList = new Section({
-  renderer: (item) => {
+  renderer: (item, method) => {
     const card = new Card(item, templateSelector, {
       handleCardClick: (name, link) => {
         popupImage.open(name, link);
       }
     });
     const cardElement = card.createCard();
-    cardList.addItem(cardElement, "append");
+    cardList.addItem(cardElement);
   }
 }, cardListSelector);
 
@@ -99,7 +99,7 @@ const popupNewCardAdd = new PopupWithForm(popupAddCard, {
   handleFormSubmit: (formData) => {
     api.saveCard(formData.link, formData.title)
       .then((data) => {
-        cardList.renderItems(data); 
+        cardList.renderItems([data],'prepend'); 
         popupNewCardAdd.close();
       })
       .catch((err) => { console.log(err) })
