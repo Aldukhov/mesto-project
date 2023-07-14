@@ -47,22 +47,38 @@ function deleteCard (card, id) {
       })
   };
 
+// создание новой карточки
+function createNewCard (item) {
+  const card = new Card(item, templateSelector, userInfo.id, {
+    handleCardClick: (name, link) => {
+      popupImage.open(name, link);
+    }},
+    {handleCardLike: (evt, card, id, likeQant) => {
+      likeCard(evt, card, id, likeQant);
+    }},
+    {handleCardDelete: (card, id) => {
+    deleteCard(card, id)
+    }});
+    const cardElement = card.createCard();
+    return cardElement;
+}
+
+
+function resetData(array) {
+  Array.from(array).forEach((input) => {
+                  if(input.name === "name") {
+          input.value = userInfo.getUserInfo().name;
+      }
+       else if (input.name === "post") {
+          input.value = userInfo.getUserInfo().post;
+      }
+  });
+}
+
 // добавление новой карточки
 const cardList = new Section({
   renderer: (item) => {
-    const card = new Card(item, templateSelector, userInfo.id, {
-      handleCardClick: (name, link) => {
-        popupImage.open(name, link);
-      }},
-      {handleCardLike: (evt, card, id, likeQant) => {
-        likeCard(evt, card, id, likeQant);
-      }},
-      {handleCardDelete: (card, id) => {
-      deleteCard(card, id)
-      }
-    });
-    const cardElement = card.createCard();
-    cardList.addItem(cardElement);
+    cardList.addItem(createNewCard(item));
   }
 }, cardListSelector);
 
@@ -88,7 +104,10 @@ const popupEditProfile = new PopupWithForm(popupPerson, {
   }
 });
 popupEditProfile.setEventListeners();
-buttonEdit.addEventListener('click', function () { popupEditProfile.resetData(), formValidatorProfile.resetValidity(), popupEditProfile.open(); });
+buttonEdit.addEventListener('click', function () {
+  resetData(document.querySelector(popupPerson).querySelectorAll('.popup__input')); 
+  formValidatorProfile.resetValidity();
+  popupEditProfile.open(); });
 
 
 //лайк карточки
@@ -158,17 +177,6 @@ buttonAddCard.addEventListener('click', () => {
 // класс попап клик на карточку для увеличения изображения
 const popupImage = new PopupWithImage(popupPicture);
 popupImage.setEventListeners();
-
-
-
-export { userInfo }
-
-
-
-
-
-
-
 
 
 

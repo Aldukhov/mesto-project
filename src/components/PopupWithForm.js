@@ -26,18 +26,6 @@ export default class PopupWithForm extends Popup {
         })
     }
 
-    resetData() {
-
-        Array.from(this._inputArr).forEach((input) => {
-                        if(input.name === "name") {
-                input.value = userInfo.getUserInfo().name;
-            }
-             else if (input.name === "post") {
-                input.value = userInfo.getUserInfo().post;
-            }
-        });
-    }
-
     renderLoading(isLoading) {
         if(isLoading) {
             this._button.textContent = 'Сохранение..';
