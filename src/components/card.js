@@ -1,6 +1,5 @@
-
-import { api } from "./utils.js";
-import { userInfo } from "./index.js";
+import { api } from "../utils/utils.js";
+import { userInfo } from "../pages/index.js";
 
 export default class Card {
   constructor (picture, selectorCard, {handleCardClick}) {
@@ -29,13 +28,13 @@ export default class Card {
     this._checkAuthor(this._card);
     this._checkLike(this._card);
     this._deleteCard(this._card, this._id);
-    this._like(this._card, this._id);
+    this._like(this._card, this._id,this._likeQant);
     this._setEventListeners(this._imgCard);
     return this._card;
   }
 
   _checkAuthor(card) {
-    if (this._ownerId === userInfo.id) {
+    if (this._ownerId === userInfo.getUserInfo().id) {
       card.querySelector('.elements__trash').classList.add('elements__trash_active');
     };
   }
@@ -43,9 +42,11 @@ export default class Card {
   _checkLike(card) {
     if (this._likes.length > 0) {
       this._likeQant(this._likes, card);
-      if (this._likes.some(element => element._id === userInfo.id)) {
+      
+      if (this._likes.some(element => element._id === userInfo.getUserInfo().id)) {
         card.querySelector('.elements__like').classList.add('elements__like_active');
       }
+
     };
   }
 
@@ -78,13 +79,14 @@ export default class Card {
     }
   }
   
-  _like(card, id) {
+  _like(card, id,likeQant) {
     card.querySelector('.elements__like').addEventListener('click', function (evt) {
       this._evtTarget = evt.target;
       if (this._evtTarget.classList.contains('elements__like_active')) {
         api.deleteLike(id).then((data) => {
           this._evtTarget.classList.remove('elements__like_active');
-          this._likeQant(data.likes, card);
+          console.log(this);
+          likeQant(data.likes, card);
         })
           .catch((err) => {
             console.log(err);
@@ -92,7 +94,8 @@ export default class Card {
       } else {
         api.addLike(id).then((data) => {
           this._evtTarget.classList.add('elements__like_active');
-          this._likeQant(data.likes, card);
+          console.log(this);
+          likeQant(data.likes, card);
         })
           .catch((err) => {
             console.log(err);

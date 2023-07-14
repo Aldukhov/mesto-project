@@ -1,4 +1,4 @@
-import  Api  from "./API copy";
+import  Api  from "../components/API copy";
 
 //Главный узел для profile
 const profileAvatar = '.profile__avatar';  

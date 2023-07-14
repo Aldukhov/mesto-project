@@ -1,15 +1,15 @@
-import "../pages/index.css";
+import "./index.css";
 import {
   api, popupPerson, popupAvatar, cardListSelector, popupAddCard, templateSelector,
   buttonEdit, popupPicture, formProfile, buttonAvatar, buttonAddCard,
   formAvatar, formNewCard, profileAvatar, profileName, profilePost
-} from "./utils";
-import PopupWithForm from "./PopupWithForm";
-import PopupWithImage from "./PopupWithImage";
-import FormValidator from "./FormValidator";
-import UserInfo from "./UserInfo";
-import Section from './Section';
-import Card from "./card";
+} from "../utils/utils";
+import PopupWithForm from "../components/PopupWithForm";
+import PopupWithImage from "../components/PopupWithImage";
+import FormValidator from "../components/FormValidator";
+import UserInfo from "../components/UserInfo";
+import Section from '../components/Section';
+import Card from "../components/card";
 
 const validObj = {
   formSelector: '.popup__form',
