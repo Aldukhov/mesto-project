@@ -36,14 +36,6 @@ formValidatorAddCard.enableValidation();
 const formValidatorProfile = new FormValidator(validObj, formProfile);
 formValidatorProfile.enableValidation();
 
-
-api.getData('users/me').then((data) => {
-  userInfo.setUserInfo(data);
-})
-  .catch((err) => {
-    console.log(err);
-  });
-
 // добавление новой карточки
 const cardList = new Section({
   renderer: (item, method) => {
@@ -57,12 +49,15 @@ const cardList = new Section({
   }
 }, cardListSelector);
 
-// отрисовка массива карточек
-api.getData('cards').then((data) => {
-  cardList.renderItems(data);
-}).catch((err) => {
-  console.log(err);
-});
+//отрисовка массива карточек и информации профиля
+Promise.all([api.getData('users/me'), api.getData('cards')])
+  .then(([user, cardsArray]) => {
+    userInfo.setUserInfo(user);
+    cardList.renderItems(cardsArray);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // попап редактирования профиля
 const popupEditProfile = new PopupWithForm(popupPerson, {
