@@ -36,12 +36,29 @@ formValidatorAddCard.enableValidation();
 const formValidatorProfile = new FormValidator(validObj, formProfile);
 formValidatorProfile.enableValidation();
 
+// удаление карточки
+function deleteCard (card, id) {
+    const listItem = evt.target.closest('.elements__card');
+    api.deleteCard(id).then((data) => {
+      listItem.remove();
+    })
+      .catch((err) => {
+        console.log(err);
+      })
+  };
+
 // добавление новой карточки
 const cardList = new Section({
-  renderer: (item, method) => {
-    const card = new Card(item, templateSelector, {
+  renderer: (item) => {
+    const card = new Card(item, templateSelector, userInfo.id, {
       handleCardClick: (name, link) => {
         popupImage.open(name, link);
+      }},
+      {handleCardLike: (evt, card, id, likeQant) => {
+        likeCard(evt, card, id, likeQant);
+      }},
+      {handleCardDelete: (card, id) => {
+      deleteCard(card, id)
       }
     });
     const cardElement = card.createCard();
@@ -73,6 +90,27 @@ const popupEditProfile = new PopupWithForm(popupPerson, {
 popupEditProfile.setEventListeners();
 buttonEdit.addEventListener('click', function () { popupEditProfile.resetData(), formValidatorProfile.resetValidity(), popupEditProfile.open(); });
 
+
+//лайк карточки
+function likeCard (evt, card, id, likeQant) {
+    if (evt.target.classList.contains('elements__like_active')) {
+      api.deleteLike(id).then((data) => {
+        this._evtTarget.classList.remove('elements__like_active');
+        likeQant(data.likes, card);
+      })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      api.addLike(id).then((data) => {
+        evt.target.classList.add('elements__like_active');
+        likeQant(data.likes, card);
+      })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
 
 // класс попап редактирования аватара
 const popupEditAvatar = new PopupWithForm(popupAvatar,

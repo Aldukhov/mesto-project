@@ -1,7 +1,7 @@
 import { api } from "../utils/utils.js";
 
 export default class Card {
-  constructor (picture, selectorCard, userId, {handleCardClick}) {
+  constructor (picture, selectorCard, userId, {handleCardClick}, {handleCardLike}, {handleCardDelete}) {
     this._link = picture.link;
     this._name = picture.name;
     this._id = picture._id;
@@ -10,6 +10,8 @@ export default class Card {
     this._ownerId = picture.owner._id;
     this._handleCardClick = handleCardClick;
     this._userId = userId;
+    this._handleCardLike = handleCardLike;
+    this._handleCardDelete = handleCardDelete;
   }
   _getElement () {
     this._cardTemplate = document.querySelector(this._selector)
@@ -27,9 +29,7 @@ export default class Card {
     this._card.querySelector('.elements__name').textContent = this._name;
     this._checkAuthor(this._card);
     this._checkLike(this._card);
-    this._deleteCard(this._card, this._id);
-    this._like(this._card, this._id,this._likeQant);
-    this._setEventListeners(this._imgCard);
+    this._setEventListeners(this._imgCard, this._card);
     return this._card;
   }
 
@@ -50,20 +50,10 @@ export default class Card {
     };
   }
 
-  _setEventListeners(card) {
-    card.addEventListener('click',() => {this._handleCardClick(this._name, this._link)});
-  }
-
-  _deleteCard(card, id) {
-    card.querySelector('.elements__trash').addEventListener('click', function (evt) {
-      this._listItem = evt.target.closest('.elements__card');
-      api.deleteCard(id).then((data) => {
-        this._listItem.remove();
-      })
-        .catch((err) => {
-          console.log(err);
-        })
-    });
+  _setEventListeners(imgCard, card) {
+    imgCard.addEventListener('click',() => {this._handleCardClick(this._name, this._link)});
+    card.querySelector('.elements__like').addEventListener('click', () => {this._handleCardLike(evt, this._card, this._id, this._likeQant)});
+    card.querySelector('.elements__trash').addEventListener('click', function (evt) {this._handleCardDelete(this._card, this._id)});
   }
 
   _likeQant(likeQantity, card) {
@@ -77,31 +67,6 @@ export default class Card {
     } else if ((likeQantity.length <= 0) && card.querySelector('.elements__like-qantity').classList.contains('elements__like-qantity_active')) {
       card.querySelector('.elements__like-qantity').classList.remove('elements__like-qantity_active');
     }
-  }
-  
-  _like(card, id,likeQant) {
-    card.querySelector('.elements__like').addEventListener('click', function (evt) {
-      this._evtTarget = evt.target;
-      if (this._evtTarget.classList.contains('elements__like_active')) {
-        api.deleteLike(id).then((data) => {
-          this._evtTarget.classList.remove('elements__like_active');
-          console.log(this);
-          likeQant(data.likes, card);
-        })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        api.addLike(id).then((data) => {
-          this._evtTarget.classList.add('elements__like_active');
-          console.log(this);
-          likeQant(data.likes, card);
-        })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    })
   }
 
 }
