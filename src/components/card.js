@@ -1,8 +1,7 @@
 import { api } from "../utils/utils.js";
-import { userInfo } from "../pages/index.js";
 
 export default class Card {
-  constructor (picture, selectorCard, {handleCardClick}) {
+  constructor (picture, selectorCard, userId, {handleCardClick}) {
     this._link = picture.link;
     this._name = picture.name;
     this._id = picture._id;
@@ -10,6 +9,7 @@ export default class Card {
     this._likes = picture.likes;
     this._ownerId = picture.owner._id;
     this._handleCardClick = handleCardClick;
+    this._userId = userId;
   }
   _getElement () {
     this._cardTemplate = document.querySelector(this._selector)
@@ -34,7 +34,7 @@ export default class Card {
   }
 
   _checkAuthor(card) {
-    if (this._ownerId === userInfo.getUserInfo().id) {
+    if (this._ownerId === this._userId) {
       card.querySelector('.elements__trash').classList.add('elements__trash_active');
     };
   }
@@ -43,7 +43,7 @@ export default class Card {
     if (this._likes.length > 0) {
       this._likeQant(this._likes, card);
       
-      if (this._likes.some(element => element._id === userInfo.getUserInfo().id)) {
+      if (this._likes.some(element => element._id === this._userId)) {
         card.querySelector('.elements__like').classList.add('elements__like_active');
       }
 
