@@ -24,14 +24,11 @@ export default class Popup {
         buttonClose.addEventListener('click', ()=> {
             this.close();
         });
-        const overlays = document.querySelectorAll('.popup')
-        overlays.forEach((overlay) => {
-            overlay.addEventListener('mousedown', (evt) => {
+        this._popup.addEventListener('mousedown', (evt) => {
                 if (evt.target.classList.contains('popup_opened')) {
                     this.close()
                 }
-            })
-        });
+            });
         document.addEventListener('keydown', this._handleEscClose);
 }
 }
