@@ -78,8 +78,11 @@ buttonEdit.addEventListener('click', function () { popupEditProfile.resetData(),
 const popupEditAvatar = new PopupWithForm(popupAvatar,
   {
     handleFormSubmit: (formData) => {
-      api.saveAvatar(formData.link, userInfo.getUserInfo().avatar)
-        .then((data) => { popupEditAvatar.close() })
+      api.saveAvatar(formData.link)
+        .then((data) => { 
+          userInfo.setUserInfo(data);
+          popupEditAvatar.close() 
+        })
         .catch((err) => { console.log(err) })
         .finally(() => {
           popupEditAvatar.renderLoading(false);
