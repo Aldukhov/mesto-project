@@ -17,6 +17,10 @@ export default class Api {
         })
     }
 
+    _getResponseData(res) {
+        return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+      }
+
     saveUser(popupNameInput, popupPostInput) {
         return fetch(`${this._baseUrl}/users/me`, {
             headers: this._headers,
@@ -36,39 +40,21 @@ export default class Api {
                 name: popupTitleInput,
                 link: popupLinkInput
             })
-        }).then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Oops: ${res.status}`);
-        })
+        }).then(this._getResponseData)
     }
 
     addLike(cardId) {
         return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
             headers: this._headers,
             method: 'PUT',
-        }).then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Oops: ${res.status}`);
-        })
+        }).then(this._getResponseData)
     }
 
     deleteLike(cardId) {
         return  fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
         method: 'DELETE',
         headers: this._headers
-    }) .then((res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Oops: ${res.status}`);
-    })
+    }) .then(this._getResponseData)
     }
 
     saveAvatar(avatar,imgAvatar) {
@@ -78,25 +64,13 @@ export default class Api {
             body: JSON.stringify({
                 avatar: avatar
             })
-        }) .then((res) => {
-            if (res.ok) {
-                return imgAvatar.setAttribute('src',avatar);
-            }
-    
-            return Promise.reject(`Oops: ${res.status}`);
-        })
+        }) .then(this._getResponseData)
     }
 
     deleteCard(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}`, {
             method: 'DELETE',
             headers: this._headers,
-        }) .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-    
-            return Promise.reject(`Oops: ${res.status}`);
-        })
+        }) .then(this._getResponseData)
     }
 }
