@@ -1,6 +1,5 @@
 import "./index.css";
-import {
-  api, popupPerson, popupAvatar, cardListSelector, popupAddCard, templateSelector,
+import { popupPerson, popupAvatar, cardListSelector, popupAddCard, templateSelector,
   buttonEdit, popupPicture, formProfile, buttonAvatar, buttonAddCard,
   formAvatar, formNewCard, profileAvatar, profileName, profilePost
 } from "../utils/utils";
@@ -10,6 +9,12 @@ import FormValidator from "../components/FormValidator";
 import UserInfo from "../components/UserInfo";
 import Section from '../components/Section';
 import Card from "../components/card";
+import Api from "../components/API";
+
+const api = new Api ({baseUrl:'https://nomoreparties.co/v1/plus-cohort-25', headers:{
+  authorization: 'fe25609f-c231-4126-8459-9808870edc8e',
+  'Content-Type': 'application/json'
+}});
 
 const validObj = {
   formSelector: '.popup__form',
