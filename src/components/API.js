@@ -29,7 +29,7 @@ export default class Api {
                 name: popupNameInput,
                 about: popupPostInput
             })
-        })
+        }).then(this._getResponseData)
     }
 
     saveCard(popupLinkInput, popupTitleInput) {
