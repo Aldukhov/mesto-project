@@ -1,5 +1,3 @@
-import { api } from "../utils/utils.js";
-
 export default class Card {
   constructor (picture, selectorCard, userId, {handleCardClick}, {handleCardLike}, {handleCardDelete}) {
     this._link = picture.link;
@@ -29,7 +27,7 @@ export default class Card {
     this._card.querySelector('.elements__name').textContent = this._name;
     this._checkAuthor(this._card);
     this._checkLike(this._card, this._likeQant);
-    this._setEventListeners(this._imgCard, this._card, this._handleCardLike, this._id, this._likeQant);
+    this._setEventListeners(this._imgCard, this._card, this._handleCardLike, this._id, this._likeQant,this._handleCardDelete);
     return this._card;
   }
 
@@ -50,10 +48,10 @@ export default class Card {
     };
   }
 
-  _setEventListeners(imgCard, card, likeCard, id, likeQuant) {
+  _setEventListeners(imgCard, card, likeCard, id, likeQuant,_handleCardDelete) {
     imgCard.addEventListener('click',() => {this._handleCardClick(this._name, this._link)});
     card.querySelector('.elements__like').addEventListener('click', function(evt) {likeCard(evt, card, id, likeQuant)});
-    card.querySelector('.elements__trash').addEventListener('click', function (evt) {this._handleCardDelete(this._card, this._id)});
+    card.querySelector('.elements__trash').addEventListener('click', function (evt) {_handleCardDelete(card, id)});
   }
 
   _likeQant(likeQantity, card) {

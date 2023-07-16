@@ -7,7 +7,7 @@ import PopupWithForm from "../components/PopupWithForm";
 import PopupWithImage from "../components/PopupWithImage";
 import FormValidator from "../components/FormValidator";
 import UserInfo from "../components/UserInfo";
-import Section from '../components/Section';
+import Section from "../components/Section";
 import Card from "../components/card";
 import Api from "../components/API";
 
@@ -38,7 +38,7 @@ formValidatorProfile.enableValidation();
 
 // удаление карточки
 function deleteCard (card, id) {
-    const listItem = evt.target.closest('.elements__card');
+    const listItem = card.closest('.elements__card');
     api.deleteCard(id).then((data) => {
       listItem.remove();
     })
@@ -49,7 +49,7 @@ function deleteCard (card, id) {
 
 // создание новой карточки
 function createNewCard (item) {
-  const card = new Card(item, templateSelector, userInfo.id, {
+  const card = new Card(item, templateSelector, userInfo.getUserInfo().id, {
     handleCardClick: (name, link) => {
       popupImage.open(name, link);
     }},
