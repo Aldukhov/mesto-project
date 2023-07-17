@@ -37,10 +37,9 @@ const formValidatorProfile = new FormValidator(validObj, formProfile);
 formValidatorProfile.enableValidation();
 
 // удаление карточки
-function deleteCard (card, id) {
-    const listItem = card.closest('.elements__card');
+function deleteCard (card, id, cardCreated) {
     api.deleteCard(id).then((data) => {
-      listItem.remove();
+      cardCreated.deleteCard(card);
     })
       .catch((err) => {
         console.log(err);
@@ -49,17 +48,17 @@ function deleteCard (card, id) {
 
 // создание новой карточки
 function createNewCard (item) {
-  const card = new Card(item, templateSelector, userInfo.getUserInfo().id, {
+  const cardNew = new Card(item, templateSelector, userInfo.getUserInfo().id, {
     handleCardClick: (name, link) => {
       popupImage.open(name, link);
     }},
     {handleCardLike: (evt, card, id, likeQant) => {
-      likeCard(evt, card, id, likeQant);
+      likeCard(evt, card, id, likeQant, cardNew);
     }},
     {handleCardDelete: (card, id) => {
-    deleteCard(card, id)
+    deleteCard(card, id, cardNew)
     }});
-    const cardElement = card.createCard();
+    const cardElement = cardNew.createCard();
     return cardElement;
 }
 
@@ -111,19 +110,17 @@ buttonEdit.addEventListener('click', function () {
 
 
 //лайк карточки
-function likeCard (evt, card, id, likeQant) {
+function likeCard (evt, card, id, likeQant, cardCreated) {
     if (evt.target.classList.contains('elements__like_active')) {
       api.deleteLike(id).then((data) => {
-        evt.target.classList.remove('elements__like_active');
-        likeQant(data.likes, card);
+        cardCreated.deleteLike(evt, likeQant, data.likes, card);
       })
         .catch((err) => {
           console.log(err);
         });
     } else {
       api.addLike(id).then((data) => {
-        evt.target.classList.add('elements__like_active');
-        likeQant(data.likes, card);
+        cardCreated.addLike(evt, likeQant, data.likes, card);
       })
         .catch((err) => {
           console.log(err);

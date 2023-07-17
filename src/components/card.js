@@ -48,6 +48,21 @@ export default class Card {
     };
   }
 
+  addLike(evt, likeQant, data, card) {
+    evt.target.classList.add('elements__like_active');
+    likeQant(data, card);
+  }
+
+  deleteLike(evt, likeQant, data, card) {
+    evt.target.classList.remove('elements__like_active');
+    likeQant(data, card);
+  }
+
+  deleteCard (card) {
+    const listItem = card.closest('.elements__card');
+    listItem.remove();
+  }
+
   _setEventListeners(imgCard, card, likeCard, id, likeQuant,_handleCardDelete) {
     imgCard.addEventListener('click',() => {this._handleCardClick(this._name, this._link)});
     card.querySelector('.elements__like').addEventListener('click', function(evt) {likeCard(evt, card, id, likeQuant)});
