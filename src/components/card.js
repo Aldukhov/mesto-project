@@ -59,8 +59,7 @@ export default class Card {
   }
 
   deleteCard (card) {
-    const listItem = card.closest('.elements__card');
-    listItem.remove();
+    this._card.remove();
   }
 
   _setEventListeners(imgCard, card, likeCard, id, likeQuant,_handleCardDelete) {
