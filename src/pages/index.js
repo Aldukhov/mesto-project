@@ -103,7 +103,7 @@ const popupEditProfile = new PopupWithForm(popupPerson, {
       });
   }
 });
-popupEditProfile.setEventListeners();
+//popupEditProfile.setEventListeners();
 buttonEdit.addEventListener('click', function () {
   resetData(document.querySelector(popupPerson).querySelectorAll('.popup__input')); 
   formValidatorProfile.resetValidity();
@@ -146,7 +146,7 @@ const popupEditAvatar = new PopupWithForm(popupAvatar,
         });
     }
   });
-popupEditAvatar.setEventListeners();
+//popupEditAvatar.setEventListeners();
 buttonAvatar.addEventListener('click', () => {
   popupEditAvatar.open();
   formValidatorAvatar.resetValidity();
@@ -168,7 +168,7 @@ const popupNewCardAdd = new PopupWithForm(popupAddCard, {
       });
 }
   });
-popupNewCardAdd.setEventListeners();
+//popupNewCardAdd.setEventListeners();
 buttonAddCard.addEventListener('click', () => {
   popupNewCardAdd.open();
   formValidatorAddCard.resetValidity();
