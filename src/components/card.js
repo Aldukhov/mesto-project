@@ -59,7 +59,7 @@ export default class Card {
   }
 
   deleteCard (card) {
-    this._card.remove();
+    card.remove();
   }
 
   _setEventListeners(imgCard, card, likeCard, id, likeQuant,_handleCardDelete) {
