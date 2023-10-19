@@ -7,7 +7,7 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 
 module.exports = {
-    entry: { main: './src/components/index.js' },
+    entry: { main: './src/pages/index.js' },
     resolve: {
       fallback: {
           "fs": false
