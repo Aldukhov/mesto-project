@@ -1,5 +1,5 @@
 .elements__trash {
-    display: block;
+    display: none;
     background: transparent;
     background-image: url('./../../../images/trash.svg');
     position: absolute;
