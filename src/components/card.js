@@ -1,5 +1,5 @@
 import { openPicture } from "./modal.js";
-import { addLike, deleteLike, deleteCardAPI } from "./API.js";
+import { api } from "./utils";
 import { userId } from "./index.js";
 
 export default class Card {
@@ -55,7 +55,7 @@ export default class Card {
   _deleteCard(card, id) {
     card.querySelector('.elements__trash').addEventListener('click', function (evt) {
       const listItem = evt.target.closest('.elements__card');
-      deleteCardAPI(id).then((data) => {
+      api.deleteCard(id).then((data) => {
         listItem.remove();
       })
         .catch((err) => {
@@ -68,7 +68,7 @@ export default class Card {
     card.querySelector('.elements__like').addEventListener('click', function (evt) {
       const evtTarget = evt.target;
       if (evtTarget.classList.contains('elements__like_active')) {
-        deleteLike(this._id).then((data) => {
+        api.deleteLike(this._id).then((data) => {
           evtTarget.classList.remove('elements__like_active');
           this._likeQant(data.likes, card);
         })
@@ -76,7 +76,7 @@ export default class Card {
             console.log(err);
           });
       } else {
-        addLike(this._id).then((data) => {
+        api.addLike(this._id).then((data) => {
           this._likeQant(data.likes, card);
           evtTarget.classList.add('elements__like_active');
         })
