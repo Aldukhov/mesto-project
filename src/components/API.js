@@ -17,7 +17,11 @@ export default class Api {
         })
     }
 
-    saveUser({popupNameInput, popupPostInput}) {
+    _getResponseData(res) {
+        return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+      }
+
+    saveUser(popupNameInput, popupPostInput) {
         return fetch(`${this._baseUrl}/users/me`, {
             headers: this._headers,
             method: 'PATCH',
@@ -25,7 +29,7 @@ export default class Api {
                 name: popupNameInput,
                 about: popupPostInput
             })
-        })
+        }).then(this._getResponseData)
     }
 
     saveCard(popupLinkInput, popupTitleInput) {
@@ -33,70 +37,40 @@ export default class Api {
             headers: this._headers,
             method: 'POST',
             body: JSON.stringify({
-                name: popupTitleInput.value,
-                link: popupLinkInput.value
+                name: popupTitleInput,
+                link: popupLinkInput
             })
-        }).then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Oops: ${res.status}`);
-        })
+        }).then(this._getResponseData)
     }
 
     addLike(cardId) {
         return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
             headers: this._headers,
             method: 'PUT',
-        }).then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Oops: ${res.status}`);
-        })
+        }).then(this._getResponseData)
     }
 
     deleteLike(cardId) {
         return  fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
         method: 'DELETE',
         headers: this._headers
-    }) .then((res) => {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Oops: ${res.status}`);
-    })
+    }) .then(this._getResponseData)
     }
 
-    saveAvatar(avatar,imgAvatar) {
+    saveAvatar(avatar) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
                 avatar: avatar
             })
-        }) .then((res) => {
-            if (res.ok) {
-                return imgAvatar.setAttribute('src',avatar);
-            }
-    
-            return Promise.reject(`Oops: ${res.status}`);
-        })
+        }) .then(this._getResponseData)
     }
 
     deleteCard(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}`, {
             method: 'DELETE',
             headers: this._headers,
-        }) .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-    
-            return Promise.reject(`Oops: ${res.status}`);
-        })
+        }) .then(this._getResponseData)
     }
 }
